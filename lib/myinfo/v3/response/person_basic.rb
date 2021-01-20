@@ -1,10 +1,15 @@
+# frozen_string_literal: true
+
+# rubocop:disable all
 module MyInfo
   module V3
-    class Response::PersonBasic
+    module Response
+      class PersonBasic
         attr_accessor :json, :my_info_json, :cleared_json, :incomplete
-        FIELDS_NOT_TO_CLEAR = %i(email contact_number contact_country_code).freeze
 
-        # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+        FIELDS_NOT_TO_CLEAR = %i[email contact_number contact_country_code].freeze
+
+        # rubocop:disable Metrics/AbcSize
         def initialize(my_info_json)
           @my_info_json = my_info_json
           @json = {
@@ -68,9 +73,9 @@ module MyInfo
             dob: 'dob',
             race: 'race',
             gender: 'sex',
-            contact_number: ['mobileno', 'nbr'],
+            contact_number: %w[mobileno nbr],
             email: 'email',
-            contact_country_code: ['mobileno', ['areacode', 'nbr']]
+            contact_country_code: ['mobileno', %w[areacode nbr]]
           }
         end
 
@@ -135,3 +140,4 @@ module MyInfo
     end
   end
 end
+# rubocop:enable all

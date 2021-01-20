@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe MyInfo::V3::PersonBasic do
   describe 'common methods' do
     let(:api) { described_class.new(nric_fin: 'S1234567A') }
@@ -25,10 +27,9 @@ describe MyInfo::V3::PersonBasic do
 
       # TODO: Patch webmock to allow proxy check
       stub_request(:get,
-        Regexp.new(
-          Regexp.escape('https://test.myinfo.endpoint:80/person-basic/S1234567A?') + '.*'
-        )
-      )
+                   Regexp.new(
+                     "#{Regexp.escape('https://test.myinfo.endpoint:80/person-basic/S1234567A?')}.*"
+                   ))
     end
 
     it 'should call the correct endpoint' do

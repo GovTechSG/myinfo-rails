@@ -13,9 +13,11 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
       - name: Install Rubocop
-        run: gem install rubocop
+        run: |
+          gem install bundler
+          bundler install
       - name: Check code
-        run: rubocop
+        run: bundle exec rubocop
   rspec-test:
     name: RSpec
     runs-on: ubuntu-18.04

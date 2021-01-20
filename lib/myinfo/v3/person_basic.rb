@@ -2,11 +2,13 @@
 
 module MyInfo
   module V3
+    # Calls the PersonBasic API
     class PersonBasic < Api
       DEFAULT_ATTRIBUTES = %i[name sex race dob residentialstatus email mobileno regadd].freeze
       attr_accessor :nric_fin, :attributes
 
       def initialize(nric_fin:, attributes: nil)
+        super
         @attributes = attributes || DEFAULT_ATTRIBUTES
         @nric_fin = nric_fin
       end
@@ -18,7 +20,7 @@ module MyInfo
         response = http.request_get(endpoint_url, headers)
         parse_response(response)
       rescue StandardError => e
-        { success: false, data: "#{e.message}" }
+        { success: false, data: e.message.to_s }
       end
 
       def slug

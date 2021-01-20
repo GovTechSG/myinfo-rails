@@ -11,7 +11,7 @@ describe MyInfo::V3::Api do
 
   describe '#header' do
     before do
-      MyInfo.configure do; end
+      MyInfo.configure { ; }
       allow_any_instance_of(described_class).to receive(:auth_header).and_return('stubbed')
     end
 
