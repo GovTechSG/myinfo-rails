@@ -8,11 +8,6 @@ SimpleCov.start 'rails' do
   add_filter '.github/'
 end
 
-if ENV['CI'] == 'true'
-  require 'codecov'
-  SimpleCov.formatter = SimpleCov::Formatter::Codecov
-end
-
 # Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
 
 ENV['RAILS_ENV'] = 'test'
