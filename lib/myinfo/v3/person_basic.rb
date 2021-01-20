@@ -8,7 +8,6 @@ module MyInfo
       attr_accessor :nric_fin, :attributes
 
       def initialize(nric_fin:, attributes: nil)
-        super
         @attributes = attributes || DEFAULT_ATTRIBUTES
         @nric_fin = nric_fin
       end

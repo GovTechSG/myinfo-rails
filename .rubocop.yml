@@ -37,6 +37,9 @@ Style/SlicingWithRange:
 Metrics/AbcSize:
   Max: 18
 
+Lint/MissingSuper:
+  Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
