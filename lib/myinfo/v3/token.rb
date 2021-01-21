@@ -11,12 +11,16 @@ module MyInfo
       end
 
       def call
-        headers = header(params: params).merge({ 'Content-Type' => 'application/x-www-form-urlencoded' })
+        super do
+          headers = header(params: params).merge({ 'Content-Type' => 'application/x-www-form-urlencoded' })
 
-        response = http.request_post("/#{slug}", params.to_param, headers)
-        parse_response(response)
-      rescue StandardError => e
-        { success: false, data: "#{e.class} - #{e.message}" }
+          response = http.request_post("/#{slug}", params.to_param, headers)
+          parse_response(response)
+        end
+      end
+
+      def http_method
+        'POST'
       end
 
       def slug
@@ -33,17 +37,16 @@ module MyInfo
         }.compact
       end
 
+      def errors
+        %w[400 401]
+      end
+
       def parse_response(response)
-        if response.code == '200'
+        super do
           json = JSON.parse(response.body)
           access_token = json['access_token']
 
           { success: true, data: access_token }
-        elsif %w[400 401].include?(response.code)
-          json = JSON.parse(response.body)
-          { success: false, data: "#{json['code']} - #{json['message']}" }
-        else
-          { success: false, data: "#{response.code} - #{response.body}" }
         end
       end
     end

@@ -43,6 +43,9 @@ Lint/MissingSuper:
 Metrics/ParameterLists:
   Max: 6
 
+Metrics/MethodLength:
+  Max: 15
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'

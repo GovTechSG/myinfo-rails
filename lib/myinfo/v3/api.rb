@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require 'jwe'
+require 'jwt'
+
 module MyInfo
   module V3
     # Base API class
     class Api
       extend Callable
+      DEFAULT_ATTRIBUTES = %i[name sex race dob residentialstatus email mobileno regadd].freeze
 
       def endpoint
         raise NotImplementedError, 'abstract'
@@ -12,10 +16,6 @@ module MyInfo
 
       def params(_args)
         raise NotImplementedError, 'abstract'
-      end
-
-      def support_gzip?
-        false
       end
 
       def http_method
@@ -26,10 +26,11 @@ module MyInfo
         {
           'Content-Type' => 'application/json',
           'Accept' => 'application/json',
-          'Cache-Control' => 'no-cache'
+          'Cache-Control' => 'no-cache',
+          'Accept-Encoding' => 'gzip',
+          'Content-Encoding' => 'gzip'
         }.tap do |values|
           values['Authorization'] = auth_header(params: params, access_token: access_token) unless config.sandbox?
-          values['Content-Encoding'] = 'gzip' if support_gzip?
         end
       end
 
@@ -43,6 +44,18 @@ module MyInfo
         }.merge(kwargs).compact
       end
 
+      def parse_response(response)
+        if response.code == '200'
+          yield
+        elsif errors.include?(response.code)
+          json = JSON.parse(response.body)
+
+          { success: false, data: "#{json['code']} - #{json['message']}" }
+        else
+          { success: false, data: "#{response.code} - #{response.body}" }
+        end
+      end
+
       protected
 
       def decrypt_jwe(text)
@@ -54,11 +67,8 @@ module MyInfo
       end
 
       def decode_jws(jws)
-        if config.sandbox?
-          jws
-        else
-          JWT.decode(jws, public_key, true, algorithm: 'RS256')
-        end
+        # TODO: verify signature
+        JWT.decode(jws, public_key, true, algorithm: 'RS256').first
       end
 
       def http
@@ -76,6 +86,12 @@ module MyInfo
 
       def config
         MyInfo.configuration
+      end
+
+      def call
+        yield
+      rescue StandardError => e
+        { success: false, data: "#{e.class} - #{e.message}" }
       end
 
       private

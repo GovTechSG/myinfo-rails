@@ -9,6 +9,7 @@ require_relative 'helpers/callable'
 require_relative 'myinfo/errors'
 require_relative 'myinfo/v3/api'
 require_relative 'myinfo/v3/token'
+require_relative 'myinfo/v3/person'
 require_relative 'myinfo/v3/person_basic'
 require_relative 'myinfo/v3/authorise_url'
 

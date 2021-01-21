@@ -6,7 +6,6 @@ describe MyInfo::V3::Api do
 
     it { expect { api.endpoint }.to raise_error(NotImplementedError) }
     it { expect { api.params(nil) }.to raise_error(NotImplementedError) }
-    it { expect(api.support_gzip?).to be(false) }
   end
 
   describe '#header' do
@@ -33,8 +32,12 @@ describe MyInfo::V3::Api do
       expect(result).to include({ 'Accept' => 'application/json' })
     end
 
-    it 'should return no Content-Encoding by default' do
-      expect(result.keys).not_to include('Content-Encoding')
+    it 'should return correct Content-Encoding' do
+      expect(result).to include({ 'Content-Encoding' => 'gzip' })
+    end
+
+    it 'should return correct Accept-Encoding' do
+      expect(result).to include({ 'Accept-Encoding' => 'gzip' })
     end
   end
 
