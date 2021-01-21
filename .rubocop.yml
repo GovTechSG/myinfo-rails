@@ -40,6 +40,9 @@ Metrics/AbcSize:
 Lint/MissingSuper:
   Enabled: false
 
+Metrics/ParameterLists:
+  Max: 6
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'

@@ -23,7 +23,7 @@ module MyInfo
       end
 
       def slug
-        'person-basic'
+        'gov/v3/person-basic'
       end
 
       def gzip_support?
@@ -63,10 +63,10 @@ module MyInfo
       end
 
       def format_response(jws)
-        decoded = if config.encrypted
-                    decode_jws(jws.delete('\"')).first
-                  else
+        decoded = if config.sandbox?
                     jws
+                  else
+                    decode_jws(jws.delete('\"')).first
                   end
 
         Response::PersonBasic.new(decoded)

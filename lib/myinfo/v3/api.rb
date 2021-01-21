@@ -4,9 +4,7 @@ module MyInfo
   module V3
     # Base API class
     class Api
-      def self.call(**kwargs)
-        new(**kwargs).call
-      end
+      extend Callable
 
       def endpoint
         raise NotImplementedError, 'abstract'
@@ -27,10 +25,10 @@ module MyInfo
       def header(params:, access_token: nil)
         {
           'Content-Type' => 'application/json',
-          'Authorization' => auth_header(params: params, access_token: access_token),
           'Accept' => 'application/json',
           'Cache-Control' => 'no-cache'
         }.tap do |values|
+          values['Authorization'] = auth_header(params: params, access_token: access_token) unless config.sandbox?
           values['Content-Encoding'] = 'gzip' if support_gzip?
         end
       end
@@ -48,18 +46,18 @@ module MyInfo
       protected
 
       def decrypt_jwe(text)
-        if config.encrypted
-          JWE.decrypt(text, private_key)
-        else
+        if config.sandbox?
           JSON.parse(text)
+        else
+          JWE.decrypt(text, private_key)
         end
       end
 
       def decode_jws(jws)
-        if config.encrypted
-          JWT.decode(jws, public_key, true, algorithm: 'RS256')
-        else
+        if config.sandbox?
           jws
+        else
+          JWT.decode(jws, public_key, true, algorithm: 'RS256')
         end
       end
 
@@ -95,10 +93,7 @@ module MyInfo
       end
 
       def sign(params)
-        query_string = params.sort_by { |k, v| [k.to_s, v] }
-                             .map { |arr| arr.join('=') }
-                             .join('&')
-
+        query_string = params.to_query
         base_string = "#{http_method}&#{config.base_url}&#{query_string}"
         signed_string = private_key.sign(OpenSSL::Digest.new('SHA256'), base_string)
         Base64.strict_encode64(signed_string)
