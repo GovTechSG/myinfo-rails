@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 describe MyInfo::V3::PersonBasic do
+  before do
+    allow_any_instance_of(described_class).to receive(:decrypt_jwe).and_return('')
+    allow_any_instance_of(described_class).to receive(:decode_jws).and_return({})
+  end
+
   describe 'common methods' do
     let(:api) { described_class.new(nric_fin: 'S1234567A', txn_no: 'test') }
 
@@ -27,8 +32,8 @@ describe MyInfo::V3::PersonBasic do
       # TODO: Patch webmock to allow proxy check
       stub_request(:get,
                    Regexp.new(
-                     "#{Regexp.escape('https://test.myinfo.endpoint:80/gov/v3/person-basic/S1234567A?')}.*"
-                   ))
+                     "#{Regexp.escape('https://test.myinfo.endpoint/gov/v3/person-basic/S1234567A?')}.*"
+                   )).to_return(body: '{}')
     end
 
     it 'should call the correct endpoint' do

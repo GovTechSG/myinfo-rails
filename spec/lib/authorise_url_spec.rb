@@ -3,7 +3,7 @@
 describe MyInfo::V3::AuthoriseUrl do
   before do
     MyInfo.configure do |config|
-      config.base_url = 'https://test.endpoint'
+      config.base_url = 'test.endpoint'
       config.client_id = 'client'
       config.singpass_eservice_id = 'singpass'
     end

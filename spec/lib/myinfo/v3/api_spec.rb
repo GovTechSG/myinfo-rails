@@ -31,14 +31,6 @@ describe MyInfo::V3::Api do
     it 'should return correct Accept' do
       expect(result).to include({ 'Accept' => 'application/json' })
     end
-
-    it 'should return correct Content-Encoding' do
-      expect(result).to include({ 'Content-Encoding' => 'gzip' })
-    end
-
-    it 'should return correct Accept-Encoding' do
-      expect(result).to include({ 'Accept-Encoding' => 'gzip' })
-    end
   end
 
   describe '#private_key' do

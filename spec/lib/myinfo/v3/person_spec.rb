@@ -28,7 +28,7 @@ describe MyInfo::V3::Person do
       end
 
       stub_request(:get,
-                   'https://test.myinfo.endpoint:80/gov/v3/person/S1234567A/?' \
+                   'https://test.myinfo.endpoint/gov/v3/person/S1234567A/?' \
                    'attributes=testing,test2&client_id=test-client&sp_esvcId=service_id').to_return(response)
     end
 
