@@ -14,17 +14,19 @@ module MyInfo
       end
 
       def call
-        super do
-          headers = header(params: params, access_token: access_token)
-          endpoint_url = "/#{slug}/#{nric_fin}/?#{params.to_query}"
+        headers = header(params: params, access_token: access_token)
+        endpoint_url = "/#{slug}/#{nric_fin}/?#{params.to_query}"
 
-          response = http.request_get(endpoint_url, headers)
-          parse_response(response)
-        end
+        response = http.request_get(endpoint_url, headers)
+        parse_response(response)
       end
 
       def slug
         'gov/v3/person'
+      end
+
+      def support_gzip?
+        true
       end
 
       def params

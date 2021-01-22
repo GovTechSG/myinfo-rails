@@ -10,7 +10,6 @@ describe MyInfo::V3::Token do
         config.singpass_eservice_id = 'service_id'
         config.client_id = 'test_client'
         config.client_secret = 'test_secret'
-        config.redirect_uri = 'redirect'
         config.sandbox = true
       end
 

@@ -23,15 +23,22 @@ module MyInfo
         'GET'
       end
 
+      def support_gzip?
+        false
+      end
+
       def header(params:, access_token: nil)
         {
           'Content-Type' => 'application/json',
           'Accept' => 'application/json',
-          'Cache-Control' => 'no-cache',
-          'Accept-Encoding' => 'gzip',
-          'Content-Encoding' => 'gzip'
+          'Cache-Control' => 'no-cache'
         }.tap do |values|
           values['Authorization'] = auth_header(params: params, access_token: access_token) unless config.sandbox?
+
+          if support_gzip?
+            values['Accept-Encoding'] = 'gzip'
+            values['Content-Encoding'] = 'gzip'
+          end
         end
       end
 
@@ -74,9 +81,9 @@ module MyInfo
 
       def http
         @http ||= if config.proxy.blank?
-                    Net::HTTP.new(config.base_url)
+                    Net::HTTP.new(config.base_url, 443)
                   else
-                    Net::HTTP.new(config.base_url, nil, config.proxy[:address], config.proxy[:port])
+                    Net::HTTP.new(config.base_url, 443, config.proxy[:address], config.proxy[:port])
                   end
 
         @http.use_ssl = true
@@ -87,12 +94,6 @@ module MyInfo
 
       def config
         MyInfo.configuration
-      end
-
-      def call
-        yield
-      rescue StandardError => e
-        { success: false, data: "#{e.class} - #{e.message}" }
       end
 
       private
@@ -109,9 +110,15 @@ module MyInfo
         OpenSSL::X509::Certificate.new(config.public_cert).public_key
       end
 
-      def sign(params)
-        query_string = params.to_query
-        base_string = "#{http_method}&#{config.base_url}&#{query_string}"
+      def to_query(headers)
+        headers.sort_by { |k, v| [k.to_s, v] }
+               .map { |arr| arr.join('=') }
+               .join('&')
+      end
+
+      def sign(headers)
+        headers_query = to_query(headers)
+        base_string = "#{http_method}&#{config.base_url}&#{headers_query}"
         signed_string = private_key.sign(OpenSSL::Digest.new('SHA256'), base_string)
         Base64.strict_encode64(signed_string)
       end
