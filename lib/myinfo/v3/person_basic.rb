@@ -7,7 +7,7 @@ module MyInfo
       attr_accessor :nric_fin, :attributes, :txn_no
 
       def initialize(nric_fin:, attributes: nil, txn_no: nil)
-        @attributes = attributes || DEFAULT_ATTRIBUTES
+        @attributes = attributes || Api::DEFAULT_ATTRIBUTES
         @nric_fin = nric_fin
         @txn_no = txn_no
       end

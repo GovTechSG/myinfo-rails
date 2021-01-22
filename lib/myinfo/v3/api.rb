@@ -8,6 +8,7 @@ module MyInfo
     # Base API class
     class Api
       extend Callable
+
       DEFAULT_ATTRIBUTES = %i[name sex race dob residentialstatus email mobileno regadd].freeze
 
       def endpoint

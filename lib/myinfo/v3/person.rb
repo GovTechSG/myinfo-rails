@@ -6,10 +6,10 @@ module MyInfo
     class Person < Api
       attr_accessor :access_token, :decoded_token, :attributes, :txn_no
 
-      def initialize(access_token:, attributes: nil, txn_no: nil)
+      def initialize(access_token:, txn_no: nil, attributes: DEFAULT_ATTRIBUTES)
         @access_token = access_token
         @decoded_token = decode_jws(access_token)
-        @attributes = attributes || DEFAULT_ATTRIBUTES
+        @attributes = attributes
         @txn_no = txn_no
       end
 

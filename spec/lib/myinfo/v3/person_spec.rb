@@ -21,6 +21,7 @@ describe MyInfo::V3::Person do
       MyInfo.configure do |config|
         config.base_url = 'test.myinfo.endpoint'
         config.client_id = 'test-client'
+        config.sandbox = true
         config.singpass_eservice_id = 'service_id'
         config.public_cert = File.read(File.join(__dir__, '../../../fixtures/sample_cert'))
         config.private_key = File.read(File.join(__dir__, '../../../fixtures/sample_private_key'))
@@ -28,8 +29,7 @@ describe MyInfo::V3::Person do
 
       stub_request(:get,
                    'https://test.myinfo.endpoint:80/gov/v3/person/S1234567A/?' \
-                   'attributes=testing,test2&client_id=test-client&sp_esvcId=service_id'
-      ).to_return(response)
+                   'attributes=testing,test2&client_id=test-client&sp_esvcId=service_id').to_return(response)
     end
 
     context 'successful response' do

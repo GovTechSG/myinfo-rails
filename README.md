@@ -1,4 +1,4 @@
-# Rails wrapper for MyInfo API
+# Rails wrapper for MyInfo API (GDS only)
 
 ![tests](https://github.com/GovTechSG/myinfo/workflows/tests/badge.svg?branch=main)
 

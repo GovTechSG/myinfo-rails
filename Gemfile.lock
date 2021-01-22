@@ -105,6 +105,8 @@ GEM
     parser (3.0.0.0)
       ast (~> 2.4.1)
     public_suffix (4.0.6)
+    puma (5.1.1)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -203,6 +205,7 @@ PLATFORMS
 
 DEPENDENCIES
   myinfo!
+  puma
   rails (~> 6.1)
   rspec (~> 3.10)
   rspec-rails (~> 4.0)

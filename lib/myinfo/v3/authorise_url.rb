@@ -6,21 +6,19 @@ module MyInfo
     class AuthoriseUrl
       extend Callable
 
-      attr_accessor :nric_fin, :attributes, :redirect_uri, :purpose, :state, :auth_mode
+      attr_accessor :nric_fin, :attributes, :redirect_uri, :purpose, :state
 
-      def initialize(nric_fin:, attributes:, redirect_uri:, purpose:, state:, auth_mode: 'SINGPASS')
+      def initialize(nric_fin:, redirect_uri:, purpose:, state:, attributes: Api::DEFAULT_ATTRIBUTES)
         @nric_fin = nric_fin
         @attributes = attributes
         @redirect_uri = redirect_uri
         @purpose = purpose
         @state = state
-        @auth_mode = auth_mode
       end
 
       # TODO: validate calls
       def call
         query_string = {
-          authmode: auth_mode,
           purpose: purpose,
           client_id: config.client_id,
           attributes: attributes.join(','),
@@ -29,7 +27,11 @@ module MyInfo
           redirect_uri: redirect_uri
         }.to_param
 
-        "#{config.base_url}/gov/v3/authorise/#{nric_fin}/?#{query_string}"
+        "#{config.base_url}/#{slug}/#{nric_fin}/?#{query_string}"
+      end
+
+      def slug
+        'gov/v3/authorise'
       end
 
       def config
