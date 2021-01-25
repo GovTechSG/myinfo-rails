@@ -9,7 +9,7 @@ describe MyInfo::V3::Person do
   describe 'common methods' do
     let(:api) { described_class.new(access_token: 'token', txn_no: 'txn') }
 
-    it { expect(api.slug).to eql('gov/v3/person') }
+    it { expect(api.slug).to eql('gov/v3/person/S1234567A/') }
     it { expect(api.http_method).to eql('GET') }
     it { expect(api.txn_no).to eql('txn') }
     it { expect(api.nric_fin).to eql('S1234567A') }
