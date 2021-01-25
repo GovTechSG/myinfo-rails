@@ -116,13 +116,6 @@ module MyInfo
                .join('&')
       end
 
-      def sign(headers)
-        headers_query = to_query(headers)
-        base_string = "#{http_method}&#{config.base_url}&#{headers_query}"
-        signed_string = private_key.sign(OpenSSL::Digest.new('SHA256'), base_string)
-        Base64.strict_encode64(signed_string)
-      end
-
       def auth_header(params:, access_token: nil)
         auth_headers = {
           app_id: config.app_id,
@@ -137,6 +130,13 @@ module MyInfo
         header_elements << "Bearer #{access_token}" if access_token.present?
 
         "PKI_SIGN #{header_elements.join(',')}"
+      end
+
+      def sign(headers)
+        headers_query = to_query(headers)
+        base_string = "#{http_method}&#{config.base_url_with_protocol}/#{slug}&#{headers_query}"
+        signed_string = private_key.sign(OpenSSL::Digest.new('SHA256'), base_string)
+        Base64.strict_encode64(signed_string)
       end
     end
   end

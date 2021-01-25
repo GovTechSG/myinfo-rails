@@ -27,7 +27,7 @@ module MyInfo
           redirect_uri: redirect_uri
         }.to_param
 
-        "https://#{config.base_url}/#{slug}/#{nric_fin}/?#{query_string}"
+        "#{config.base_url_with_protocol}/#{slug}/#{nric_fin}/?#{query_string}"
       end
 
       def slug

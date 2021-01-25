@@ -14,8 +14,8 @@ module MyInfo
 
       def call
         headers = header(params: params).merge({ 'Content-Type' => 'application/x-www-form-urlencoded' })
-
         response = http.request_post("/#{slug}", params.to_param, headers)
+
         parse_response(response)
       end
 
@@ -31,7 +31,6 @@ module MyInfo
         {
           code: code,
           state: state,
-          grant_type: 'authorization_code',
           client_id: config.client_id,
           client_secret: config.client_secret,
           redirect_uri: redirect_uri

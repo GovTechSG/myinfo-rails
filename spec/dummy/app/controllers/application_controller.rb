@@ -16,9 +16,6 @@ class ApplicationController < ActionController::Base
       state: params[:state],
       redirect_uri: token_callback_url
     )
-
-    pp response
-
     render plain: ''
   end
 

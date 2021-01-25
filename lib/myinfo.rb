@@ -34,6 +34,10 @@ module MyInfo
       @proxy = { address: nil, port: nil }
     end
 
+    def base_url_with_protocol
+      "https://#{base_url}"
+    end
+
     def sandbox?
       @sandbox
     end
