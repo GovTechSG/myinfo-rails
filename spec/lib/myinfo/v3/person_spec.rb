@@ -43,7 +43,8 @@ describe MyInfo::V3::Person do
       subject { described_class.call(access_token: 'token', attributes: %w[testing test2]) }
 
       it 'should return the correct response' do
-        expect(subject).to eql({ success: true, data: '' })
+        expect(subject).to be_success
+        expect(subject.data).to eql('')
       end
     end
   end

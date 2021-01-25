@@ -30,7 +30,8 @@ describe MyInfo::V3::Token do
       end
 
       it 'should return correct data' do
-        expect(subject).to eql({ success: true, data: 'SomeJWTAccessToken' })
+        expect(subject).to be_success
+        expect(subject.data).to eql('SomeJWTAccessToken')
       end
     end
 
@@ -44,7 +45,8 @@ describe MyInfo::V3::Token do
       end
 
       it 'should return correct data' do
-        expect(subject).to eql({ success: false, data: '400 - error' })
+        expect(subject).not_to be_success
+        expect(subject.data).to eql('400 - error')
       end
     end
 
@@ -58,7 +60,8 @@ describe MyInfo::V3::Token do
       end
 
       it 'should return correct data' do
-        expect(subject).to eql({ success: false, data: '401 - error' })
+        expect(subject).not_to be_success
+        expect(subject.data).to eql('401 - error')
       end
     end
 
@@ -72,7 +75,8 @@ describe MyInfo::V3::Token do
       end
 
       it 'should return correct data' do
-        expect(subject).to eql({ success: false, data: '500 - some unexpected message' })
+        expect(subject).not_to be_success
+        expect(subject.data).to eql('500 - some unexpected message')
       end
     end
   end

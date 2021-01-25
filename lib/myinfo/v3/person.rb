@@ -51,7 +51,7 @@ module MyInfo
           json = decrypt_jwe(response.body)
           json = decode_jws(json.delete('"')) unless config.sandbox?
 
-          { success: true, data: json }
+          Response.new(success: true, data: json)
         end
       end
     end

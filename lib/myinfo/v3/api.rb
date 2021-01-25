@@ -58,9 +58,9 @@ module MyInfo
         elsif errors.include?(response.code)
           json = JSON.parse(response.body)
 
-          { success: false, data: "#{json['code']} - #{json['message']}" }
+          Response.new(success: false, data: "#{json['code']} - #{json['message']}")
         else
-          { success: false, data: "#{response.code} - #{response.body}" }
+          Response.new(success: false, data: "#{response.code} - #{response.body}")
         end
       end
 

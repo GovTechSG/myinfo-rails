@@ -51,7 +51,7 @@ module MyInfo
           jws = decrypt_jwe(response.body.to_s)
           result = format_response(jws)
 
-          { success: true, data: result }
+          Response.new(success: true, data: result)
         end
       end
 

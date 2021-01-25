@@ -33,6 +33,7 @@ module MyInfo
           state: state,
           client_id: config.client_id,
           client_secret: config.client_secret,
+          grant_type: 'authorization_code',
           redirect_uri: redirect_uri
         }.compact
       end
@@ -46,7 +47,7 @@ module MyInfo
           json = JSON.parse(response.body)
           access_token = json['access_token']
 
-          { success: true, data: access_token }
+          Response.new(success: true, data: access_token)
         end
       end
     end
