@@ -4,12 +4,11 @@ module MyInfo
   module V3
     # Called after authorise to obtain a token for API calls
     class Token < Api
-      attr_accessor :code, :state, :redirect_uri
+      attr_accessor :code, :state
 
-      def initialize(code:, redirect_uri:, state: nil)
+      def initialize(code:, state: nil)
         @code = code
         @state = state
-        @redirect_uri = redirect_uri
       end
 
       def call
@@ -34,7 +33,7 @@ module MyInfo
           client_id: config.client_id,
           client_secret: config.client_secret,
           grant_type: 'authorization_code',
-          redirect_uri: redirect_uri
+          redirect_uri: config.redirect_uri
         }.compact
       end
 

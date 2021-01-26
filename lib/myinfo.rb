@@ -28,7 +28,7 @@ module MyInfo
   # Configuration to set various properties needed to use MyInfo
   class Configuration
     attr_accessor :singpass_eservice_id, :app_id, :base_url, :client_id, :proxy,
-                  :sandbox, :private_key, :public_cert, :client_secret
+                  :sandbox, :private_key, :public_cert, :client_secret, :redirect_uri
 
     def initialize
       @sandbox = false

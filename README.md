@@ -1,9 +1,9 @@
-# Rails wrapper for MyInfo API (GDS only)
+# Rails wrapper for MyInfo API (Government services only)
 
 ![tests](https://github.com/GovTechSG/myinfo/workflows/tests/badge.svg?branch=main)
 
 
-MyInfo documentation: https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v3.1.1.html
+MyInfo documentation: https://public.cloud.myinfo.gov.sg/myinfo/tuo/myinfo-tuo-specs.html
 
 ## Trying out
 1. Use ruby 2.7
@@ -20,6 +20,7 @@ MyInfo documentation: https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v
     config.client_id = ''
     config.client_secret = ''
     config.base_url = 'test.api.myinfo.gov.sg' # don't set https://
+    config.redirect_uri = 'https://localhost:3001/callback'
     config.singpass_eservice_id = 'MYINFO-CONSENTPLATFORM'
     config.private_key = File.read(Rails.root.join('private_key_location'))
     config.public_cert = File.read(Rails.root.join('public_cert_location'))
@@ -32,18 +33,16 @@ MyInfo documentation: https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v
 ```ruby
 redirect_to MyInfo::V3::AuthoriseUrl.call(
       nric_fin: "user's NRIC", # see documentation for list of sample NRICs
-      redirect_uri: callback_url,
       purpose: 'set your purpose here',
       state: SecureRandom.hex # set a state to check on callback
     )
 ```
 
-4. On `callback_url`, obtain a `MyInfo::V3::Token`. This token can only be used once.
+4. On `redirect_url`, obtain a `MyInfo::V3::Token`. This token can only be used once.
 ```ruby
     response = MyInfo::V3::Token.call(
       code: params[:code],
-      state: params[:state],
-      redirect_uri: callback_url # same callback_url as above
+      state: params[:state]
     )
 ```
 

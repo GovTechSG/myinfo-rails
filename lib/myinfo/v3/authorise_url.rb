@@ -6,12 +6,11 @@ module MyInfo
     class AuthoriseUrl
       extend Callable
 
-      attr_accessor :nric_fin, :attributes, :redirect_uri, :purpose, :state
+      attr_accessor :nric_fin, :attributes, :purpose, :state
 
-      def initialize(nric_fin:, redirect_uri:, purpose:, state:, attributes: Api::DEFAULT_ATTRIBUTES)
+      def initialize(nric_fin:, purpose:, state:, attributes: Api::DEFAULT_ATTRIBUTES)
         @nric_fin = nric_fin
         @attributes = attributes
-        @redirect_uri = redirect_uri
         @purpose = purpose
         @state = state
       end
@@ -24,7 +23,7 @@ module MyInfo
           attributes: attributes.join(','),
           sp_esvcId: config.singpass_eservice_id,
           state: state,
-          redirect_uri: redirect_uri
+          redirect_uri: config.redirect_uri
         }.to_param
 
         "#{config.base_url_with_protocol}/#{slug}/#{nric_fin}/?#{query_string}"

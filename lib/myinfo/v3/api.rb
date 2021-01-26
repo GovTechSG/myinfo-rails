@@ -42,16 +42,6 @@ module MyInfo
         end
       end
 
-      def authorise_params(attributes, **kwargs)
-        {
-          authmode: 'SINGPASS',
-          login_type: 'SINGPASS',
-          response_type: 'code',
-          attributes: attributes.join(','),
-          client_id: config.client_id
-        }.merge(kwargs).compact
-      end
-
       def parse_response(response)
         if response.code == '200'
           yield

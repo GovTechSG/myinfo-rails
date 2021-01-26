@@ -6,12 +6,13 @@ describe MyInfo::V3::AuthoriseUrl do
       config.base_url = 'test.endpoint'
       config.client_id = 'client'
       config.singpass_eservice_id = 'singpass'
+      config.redirect_uri = 'https://app.host'
     end
   end
 
   context 'correct parameters' do
     subject do
-      described_class.call(nric_fin: 'S1234567A', attributes: %w[name job], redirect_uri: 'https://app.host',
+      described_class.call(nric_fin: 'S1234567A', attributes: %w[name job],
                            purpose: 'to test', state: 'some state')
     end
 

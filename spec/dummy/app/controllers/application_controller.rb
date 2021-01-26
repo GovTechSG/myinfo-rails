@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
     # Step 1: Redirect to authorise
     redirect_to MyInfo::V3::AuthoriseUrl.call(
       nric_fin: 'S9812381D',
-      redirect_uri: callback_url,
       purpose: 'testing',
       state: SecureRandom.hex
     )
@@ -14,7 +13,6 @@ class ApplicationController < ActionController::Base
     response = MyInfo::V3::Token.call(
       code: params[:code],
       state: params[:state],
-      redirect_uri: callback_url
     )
 
     if response.success?
@@ -22,11 +20,5 @@ class ApplicationController < ActionController::Base
     end
 
     render plain: response.data
-  end
-
-  private
-
-  def callback_url
-    url_for(action: 'callback', only_path: false)
   end
 end

@@ -2,7 +2,7 @@
 
 describe MyInfo::V3::Token do
   describe '#call' do
-    subject { described_class.call(code: 'test', redirect_uri: 'redirect') }
+    subject { described_class.call(code: 'test') }
 
     before do
       MyInfo.configure do |config|
@@ -11,6 +11,7 @@ describe MyInfo::V3::Token do
         config.client_id = 'test_client'
         config.client_secret = 'test_secret'
         config.sandbox = true
+        config.redirect_uri = 'redirect'
       end
 
       stub_request(:post, 'https://test.myinfo.endpoint/gov/v3/token').with(
