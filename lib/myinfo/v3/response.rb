@@ -14,6 +14,10 @@ module MyInfo
       def success?
         @success
       end
+
+      def to_s
+        { success: success, data: data }
+      end
     end
   end
 end
