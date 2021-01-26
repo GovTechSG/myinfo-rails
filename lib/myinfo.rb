@@ -4,9 +4,11 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-require_relative 'helpers/callable'
-
 require_relative 'myinfo/errors'
+
+require_relative 'myinfo/helpers/callable'
+require_relative 'myinfo/helpers/attributes'
+
 require_relative 'myinfo/v3/response'
 require_relative 'myinfo/v3/api'
 require_relative 'myinfo/v3/token'

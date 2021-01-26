@@ -13,7 +13,7 @@ describe MyInfo::V3::Person do
     it { expect(api.http_method).to eql('GET') }
     it { expect(api.txn_no).to eql('txn') }
     it { expect(api.nric_fin).to eql('S1234567A') }
-    it { expect(api.attributes).to eql(described_class::DEFAULT_ATTRIBUTES) }
+    it { expect(api.attributes).to eql(MyInfo::Attributes::DEFAULT_VALUES.join(',')) }
   end
 
   describe '#call' do

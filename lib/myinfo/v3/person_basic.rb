@@ -6,8 +6,8 @@ module MyInfo
     class PersonBasic < Api
       attr_accessor :nric_fin, :attributes, :txn_no
 
-      def initialize(nric_fin:, txn_no: nil, attributes: DEFAULT_ATTRIBUTES)
-        @attributes = attributes
+      def initialize(nric_fin:, txn_no: nil, attributes: nil)
+        @attributes = Attributes.parse(attributes)
         @nric_fin = nric_fin
         @txn_no = txn_no
       end
@@ -31,7 +31,7 @@ module MyInfo
       def params
         {
           txnNo: txn_no,
-          attributes: attributes.join(','),
+          attributes: attributes,
           client_id: config.client_id,
           sp_esvcId: config.singpass_eservice_id
         }.compact

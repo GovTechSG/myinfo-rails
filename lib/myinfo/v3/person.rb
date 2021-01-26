@@ -6,10 +6,10 @@ module MyInfo
     class Person < Api
       attr_accessor :access_token, :decoded_token, :attributes, :txn_no
 
-      def initialize(access_token:, txn_no: nil, attributes: DEFAULT_ATTRIBUTES)
+      def initialize(access_token:, txn_no: nil, attributes: nil)
         @access_token = access_token
         @decoded_token = decode_jws(access_token)
-        @attributes = attributes
+        @attributes = Attributes.parse(attributes)
         @txn_no = txn_no
       end
 
@@ -32,7 +32,7 @@ module MyInfo
       def params
         {
           txnNo: txn_no,
-          attributes: attributes.join(','),
+          attributes: attributes,
           client_id: config.client_id,
           sp_esvcId: config.singpass_eservice_id
         }.compact

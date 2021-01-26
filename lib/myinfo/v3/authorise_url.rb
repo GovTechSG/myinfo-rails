@@ -8,9 +8,9 @@ module MyInfo
 
       attr_accessor :nric_fin, :attributes, :purpose, :state
 
-      def initialize(nric_fin:, purpose:, state:, attributes: Api::DEFAULT_ATTRIBUTES)
+      def initialize(nric_fin:, purpose:, state:, attributes: nil)
         @nric_fin = nric_fin
-        @attributes = attributes
+        @attributes = Attributes.parse(attributes)
         @purpose = purpose
         @state = state
       end
@@ -20,7 +20,7 @@ module MyInfo
         query_string = {
           purpose: purpose,
           client_id: config.client_id,
-          attributes: attributes.join(','),
+          attributes: attributes,
           sp_esvcId: config.singpass_eservice_id,
           state: state,
           redirect_uri: config.redirect_uri
