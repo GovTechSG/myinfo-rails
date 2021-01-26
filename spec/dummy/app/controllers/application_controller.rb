@@ -6,6 +6,13 @@ class ApplicationController < ActionController::Base
       purpose: 'testing',
       state: SecureRandom.hex
     )
+
+    # Try PersonBasic if you want
+    # response = MyInfo::V3::PersonBasic.call(
+    #   nric_fin: 'S9812381D',
+    #   txn_no: '1'
+    # )
+    # render plain: response.data
   end
 
   def callback

@@ -11,7 +11,6 @@ describe MyInfo::V3::PersonBasic do
 
     it { expect(api.slug).to eql('gov/v3/person-basic/S1234567A/') }
     it { expect(api.http_method).to eql('GET') }
-    it { expect(api.nonce).not_to be_nil }
     it { expect(api.txn_no).to eql('test') }
     it { expect(api.nric_fin).to eql('S1234567A') }
     it { expect(api.attributes).to eql(described_class::DEFAULT_ATTRIBUTES) }

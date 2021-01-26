@@ -6,7 +6,7 @@ module MyInfo
     class PersonBasic < Api
       attr_accessor :nric_fin, :attributes, :txn_no
 
-      def initialize(nric_fin:, txn_no: nil, attributes: Api::DEFAULT_ATTRIBUTES)
+      def initialize(nric_fin:, txn_no: nil, attributes: DEFAULT_ATTRIBUTES)
         @attributes = attributes
         @nric_fin = nric_fin
         @txn_no = txn_no
@@ -20,25 +20,20 @@ module MyInfo
         parse_response(response)
       end
 
-      def support_gzip?
-        true
-      end
-
       def slug
         "gov/v3/person-basic/#{nric_fin}/"
       end
 
-      def nonce
-        SecureRandom.hex
+      def support_gzip?
+        true
       end
 
       def params
         {
-          sp_esvcId: config.singpass_eservice_id,
-          nonce: nonce,
           txnNo: txn_no,
           attributes: attributes.join(','),
-          client_id: config.client_id
+          client_id: config.client_id,
+          sp_esvcId: config.singpass_eservice_id
         }.compact
       end
 
@@ -48,18 +43,10 @@ module MyInfo
 
       def parse_response(response)
         super do
-          jws = decrypt_jwe(response.body.to_s)
-          result = format_response(jws)
+          json = decrypt_jwe(response.body)
+          json = decode_jws(json.delete('\"')) unless config.sandbox?
 
-          Response.new(success: true, data: result)
-        end
-      end
-
-      def format_response(jws)
-        if config.sandbox?
-          jws
-        else
-          decode_jws(jws.delete('\"'))
+          Response.new(success: true, data: json)
         end
       end
     end
