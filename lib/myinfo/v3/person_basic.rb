@@ -6,15 +6,15 @@ module MyInfo
     class PersonBasic < Api
       attr_accessor :nric_fin, :attributes, :txn_no
 
-      def initialize(nric_fin:, attributes: nil, txn_no: nil)
-        @attributes = attributes || Api::DEFAULT_ATTRIBUTES
+      def initialize(nric_fin:, txn_no: nil, attributes: Api::DEFAULT_ATTRIBUTES)
+        @attributes = attributes
         @nric_fin = nric_fin
         @txn_no = txn_no
       end
 
       def call
         headers = header(params: params)
-        endpoint_url = "/#{slug}/#{nric_fin}?#{params.to_query}"
+        endpoint_url = "/#{slug}?#{params.to_query}"
 
         response = http.request_get(endpoint_url, headers)
         parse_response(response)
@@ -25,7 +25,7 @@ module MyInfo
       end
 
       def slug
-        'gov/v3/person-basic'
+        "gov/v3/person-basic/#{nric_fin}/"
       end
 
       def nonce

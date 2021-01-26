@@ -9,7 +9,7 @@ describe MyInfo::V3::PersonBasic do
   describe 'common methods' do
     let(:api) { described_class.new(nric_fin: 'S1234567A', txn_no: 'test') }
 
-    it { expect(api.slug).to eql('gov/v3/person-basic') }
+    it { expect(api.slug).to eql('gov/v3/person-basic/S1234567A/') }
     it { expect(api.http_method).to eql('GET') }
     it { expect(api.nonce).not_to be_nil }
     it { expect(api.txn_no).to eql('test') }
@@ -32,7 +32,7 @@ describe MyInfo::V3::PersonBasic do
       # TODO: Patch webmock to allow proxy check
       stub_request(:get,
                    Regexp.new(
-                     "#{Regexp.escape('https://test.myinfo.endpoint/gov/v3/person-basic/S1234567A?')}.*"
+                     "#{Regexp.escape('https://test.myinfo.endpoint/gov/v3/person-basic/S1234567A/?')}.*"
                    )).to_return(body: '{}')
     end
 
