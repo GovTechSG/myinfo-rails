@@ -16,7 +16,7 @@ module MyInfo
       end
 
       def to_s
-        { success: success, data: data }
+        data
       end
     end
   end
