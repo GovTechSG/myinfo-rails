@@ -4,7 +4,7 @@
 
 
 MyInfo documentation (Public): https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v3.1.0.html
-MyInfo documentation (GDS only): https://public.cloud.myinfo.gov.sg/myinfo/tuo/myinfo-tuo-specs.html
+MyInfo documentation (Government): https://public.cloud.myinfo.gov.sg/myinfo/tuo/myinfo-tuo-specs.html
 
 ## Trying out
 1. Use ruby 2.7
@@ -52,7 +52,7 @@ redirect_to MyInfo::V3::AuthoriseUrl.call(
 result = MyInfo::V3::Person.call(access_token: response.data) if response.success?
 ```
 
-## Basic Setup (GDS)
+## Basic Setup (Government)
 
 1. `bundle add myinfo`
 2. Create a `config/initializers/myinfo.rb` and add the required configuration based on your environment.
