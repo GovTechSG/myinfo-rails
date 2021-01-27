@@ -3,15 +3,9 @@
 ![tests](https://github.com/GovTechSG/myinfo/workflows/tests/badge.svg?branch=main)
 
 
-MyInfo documentation (Public): https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v3.1.0.html
-MyInfo documentation (Government): https://public.cloud.myinfo.gov.sg/myinfo/tuo/myinfo-tuo-specs.html
+[MyInfo Documentation (Public)](https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v3.1.0.html)
 
-## Trying out
-1. Use ruby 2.7
-2. `bundle install`
-3. `cd spec/dummy && rails s`
-4. Navigate to `localhost:3001`
-
+[MyInfo Documentation (Government)](https://public.cloud.myinfo.gov.sg/myinfo/tuo/myinfo-tuo-specs.html)
 ## Basic Setup (Public)
 
 1. `bundle add myinfo`
@@ -93,10 +87,18 @@ redirect_to MyInfo::V3::AuthoriseUrl.call(
 result = MyInfo::V3::Person.call(access_token: response.data) if response.success?
 ```
 
+## Sample App Demo
+
+1. `git clone git@github.com:GovTechSG/myinfo-rails.git`
+2. `cd myinfo-rails`
+3. `bundle install`
+4. `cd spec/dummy && rails s`
+5. Navigate to `localhost:3001`
+
 ## Advanced
 - `attributes` can be passed to `AuthoriseUrl` and `Person` as an array to override the default attributes queried - check MyInfo for a list of available attributes.
 
 - `success?` can be called on `MyInfo::V3::Response` to determine whether the query has succeeded or failed. Check MyInfo API for a list of responses and how to deal with them.
 
 ## Disclaimer
-Provided certificates, keys and secrets for the dummy application and tests are either obtained from [MyInfo Demo App](https://github.com/ndi-trusted-data/myinfo-demo-app) or free samples online, and are for demonstration purposes only. They should not be re-used for staging or production environments.
+Provided credentials in the repository are either obtained from [MyInfo Demo App](https://github.com/ndi-trusted-data/myinfo-demo-app) or samples online, and are only for testing purposes. They should not be re-used for staging or production environments. Visit the [official MyInfo tutorial](https://www.ndi-api.gov.sg/library/myinfo/tutorial3) for more information.
