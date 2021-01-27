@@ -30,15 +30,22 @@ module MyInfo
   # Configuration to set various properties needed to use MyInfo
   class Configuration
     attr_accessor :singpass_eservice_id, :app_id, :base_url, :client_id, :proxy,
-                  :sandbox, :private_key, :public_cert, :client_secret, :redirect_uri
+                  :private_key, :public_cert, :client_secret, :redirect_uri
+
+    attr_writer :public_facing, :sandbox
 
     def initialize
+      @public_facing = false
       @sandbox = false
       @proxy = { address: nil, port: nil }
     end
 
     def base_url_with_protocol
       "https://#{base_url}"
+    end
+
+    def public?
+      @public_facing
     end
 
     def sandbox?

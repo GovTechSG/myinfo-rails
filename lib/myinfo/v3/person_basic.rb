@@ -7,6 +7,8 @@ module MyInfo
       attr_accessor :nric_fin, :attributes, :txn_no
 
       def initialize(nric_fin:, txn_no: nil, attributes: nil)
+        raise UnavailableError, 'person-basic endpoint is not available for public-facing APIs.' if config.public?
+
         @attributes = Attributes.parse(attributes)
         @nric_fin = nric_fin
         @txn_no = txn_no

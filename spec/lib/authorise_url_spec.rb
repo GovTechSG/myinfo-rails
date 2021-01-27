@@ -20,7 +20,9 @@ describe MyInfo::V3::AuthoriseUrl do
       expect(subject).to eql(
         'https://test.endpoint/gov/v3/authorise/S1234567A/' \
         '?attributes=name%2Cjob' \
+        '&authmode=SINGPASS' \
         '&client_id=client' \
+        '&login_type=SINGPASS' \
         '&purpose=to+test' \
         '&redirect_uri=https%3A%2F%2Fapp.host' \
         '&sp_esvcId=singpass' \

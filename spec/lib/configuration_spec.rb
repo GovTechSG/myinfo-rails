@@ -9,6 +9,8 @@ describe MyInfo::Configuration do
   end
 
   it 'should have correct attributes' do
+    expect(config).not_to be_public
+    expect(config).not_to be_sandbox
     expect(config.client_id).to eql('client_id')
     expect(config.singpass_eservice_id).to eql('eservice_id')
     expect(config.proxy[:address]).to be_nil

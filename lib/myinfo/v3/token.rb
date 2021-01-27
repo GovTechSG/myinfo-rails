@@ -23,7 +23,9 @@ module MyInfo
       end
 
       def slug
-        'gov/v3/token'
+        slug_prefix = config.public? ? 'com' : 'gov'
+
+        "#{slug_prefix}/v3/token"
       end
 
       def params

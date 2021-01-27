@@ -22,7 +22,9 @@ module MyInfo
       end
 
       def slug
-        "gov/v3/person/#{nric_fin}/"
+        slug_prefix = config.public? ? 'com' : 'gov'
+
+        "#{slug_prefix}/v3/person/#{nric_fin}/"
       end
 
       def support_gzip?
