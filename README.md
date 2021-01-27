@@ -98,7 +98,15 @@ result = MyInfo::V3::Person.call(access_token: response.data) if response.succes
 ## Advanced
 - `attributes` can be passed to `AuthoriseUrl` and `Person` as an array to override the default attributes queried - check MyInfo for a list of available attributes.
 
-- `success?` can be called on `MyInfo::V3::Response` to determine whether the query has succeeded or failed. Check MyInfo API for a list of responses and how to deal with them.
+- `success?` can be called on `MyInfo::V3::Response` to determine whether the query has succeeded or failed. Check MyInfo API for a list of responses and how to handle them.
 
 ## Disclaimer
 Provided credentials in the repository are either obtained from [MyInfo Demo App](https://github.com/ndi-trusted-data/myinfo-demo-app) or samples online, and are only for testing purposes. They should not be re-used for staging or production environments. Visit the [official MyInfo tutorial](https://www.ndi-api.gov.sg/library/myinfo/tutorial3) for more information.
+
+## Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Write code and tests
+3. Submit a PR

@@ -3,8 +3,8 @@
 Gem::Specification.new do |s|
   s.required_ruby_version = '~> 2.7'
   s.name        = 'myinfo'
-  s.version     = '0.0.0'
-  s.date        = '2020-01-18'
+  s.version     = '0.1.0'
+  s.date        = '2020-01-27'
   s.summary     = 'MyInfo gem'
   s.description = 'Rails wrapper for MyInfo API'
   s.authors     = ['Lim Yao Jie']
