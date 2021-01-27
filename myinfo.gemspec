@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = '0.0.0'
   s.date        = '2020-01-18'
   s.summary     = 'MyInfo gem'
-  s.description = 'A gem that implements MyInfo API'
+  s.description = 'Rails wrapper for MyInfo API'
   s.authors     = ['Lim Yao Jie']
   s.email       = 'limyaojie93@gmail.com'
   s.files       = Dir['lib/**/*.rb', 'README.md']
