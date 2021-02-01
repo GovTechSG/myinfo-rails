@@ -15,7 +15,7 @@
     config.app_id = ''
     config.client_id = ''
     config.client_secret = ''
-    config.base_url = 'test.api.myinfo.gov.sg' # don't set https://
+    config.base_url = 'test.api.myinfo.gov.sg'
     config.redirect_uri = 'https://localhost:3001/callback'
     config.public_facing = true
     config.private_key = File.read(Rails.root.join('private_key_location'))
@@ -55,7 +55,7 @@ result = MyInfo::V3::Person.call(access_token: response.data) if response.succes
     config.app_id = ''
     config.client_id = ''
     config.client_secret = ''
-    config.base_url = 'test.api.myinfo.gov.sg' # don't set https://
+    config.base_url = 'test.api.myinfo.gov.sg'
     config.redirect_uri = 'https://localhost:3001/callback'
     config.singpass_eservice_id = 'MYINFO-CONSENTPLATFORM'
     config.private_key = File.read(Rails.root.join('private_key_location'))

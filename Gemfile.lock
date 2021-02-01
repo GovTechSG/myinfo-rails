@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    myinfo (0.1.0)
+    myinfo (0.2.0)
       jwe (~> 0.4)
       jwt (~> 2.2)
 

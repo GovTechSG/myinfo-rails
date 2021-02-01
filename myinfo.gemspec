@@ -3,15 +3,14 @@
 Gem::Specification.new do |s|
   s.required_ruby_version = '~> 2.7'
   s.name        = 'myinfo'
-  s.version     = '0.1.0'
+  s.version     = '0.2.0'
   s.date        = '2020-01-27'
   s.summary     = 'MyInfo gem'
   s.description = 'Rails wrapper for MyInfo API'
   s.authors     = ['Lim Yao Jie']
   s.email       = 'limyaojie93@gmail.com'
   s.files       = Dir['lib/**/*.rb', 'README.md']
-  s.homepage    =
-    'https://rubygems.org/gems/myinfo'
+  s.homepage    = 'https://rubygems.org/gems/myinfo'
   s.license = 'MIT'
 
   s.add_dependency 'jwe', '~> 0.4'
