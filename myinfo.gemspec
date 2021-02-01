@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Lim Yao Jie']
   s.email       = 'limyaojie93@gmail.com'
   s.files       = Dir['lib/**/*.rb', 'README.md']
-  s.homepage    = 'https://rubygems.org/gems/myinfo'
-  s.license = 'MIT'
+  s.homepage    = 'https://github.com/GovTechSG/myinfo-rails'
+  s.license     = 'MIT'
 
   s.add_dependency 'jwe', '~> 0.4'
   s.add_dependency 'jwt', '~> 2.2'
