@@ -17,6 +17,10 @@ module MyInfo
         raise NotImplementedError, 'abstract'
       end
 
+      def slug
+        ''
+      end
+
       def http_method
         'GET'
       end
@@ -63,7 +67,6 @@ module MyInfo
       end
 
       def decode_jws(jws)
-        # TODO: verify signature
         JWT.decode(jws, public_key, true, algorithm: 'RS256').first
       end
 

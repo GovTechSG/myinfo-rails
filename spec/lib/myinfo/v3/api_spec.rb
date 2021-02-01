@@ -88,4 +88,115 @@ describe MyInfo::V3::Api do
       end
     end
   end
+
+  describe '#auth_header' do
+    let(:access_token) { nil }
+
+    before do
+      MyInfo.configure do |config|
+        config.app_id = 'test-app'
+      end
+
+      allow(SecureRandom).to receive(:hex).and_return('nonce')
+      allow_any_instance_of(described_class).to receive(:sign).and_return('signed')
+    end
+
+    subject { described_class.new.send(:auth_header, params: params, access_token: access_token) }
+
+    # rubocop:disable Layout/LineLength
+    context 'with additional params' do
+      let(:params) { { 'key' => 'value' } }
+
+      it 'should return the correct auth header' do
+        expect(subject).to match(/PKI_SIGN app_id="test-app",nonce="nonce",signature_method="RS256",timestamp=".*",key="value",signature="signed"/)
+      end
+    end
+
+    context 'with access_token' do
+      let(:params) { {} }
+      let(:access_token) { 'token' }
+
+      it 'should return the correct auth header' do
+        expect(subject).to match(/PKI_SIGN app_id="test-app",nonce="nonce",signature_method="RS256",timestamp=".*",signature="signed",Bearer token/)
+      end
+    end
+    # rubocop:enable Layout/LineLength
+  end
+
+  describe '#decrypt_jwe' do
+    let(:encrypted_text) { 'encrypted' }
+    let(:decrypted_text) { '"decrypted"' }
+
+    context 'sandbox' do
+      before do
+        MyInfo.configure do |config|
+          config.sandbox = true
+        end
+      end
+
+      subject { described_class.new.send(:decrypt_jwe, { 'key' => 'value' }.to_json) }
+
+      it { expect(subject).to eql({ 'key' => 'value' }) }
+    end
+
+    context 'not sandbox' do
+      before do
+        MyInfo.configure do |config|
+          config.sandbox = false
+        end
+      end
+
+      subject { described_class.new.send(:decrypt_jwe, encrypted_text) }
+
+      before do
+        allow(JWE).to receive(:decrypt).with(encrypted_text, instance_of(OpenSSL::PKey::RSA)).and_return(decrypted_text)
+      end
+
+      it { expect(subject).to eql(decrypted_text) }
+    end
+  end
+
+  describe '#decode_jws' do
+    let(:encoded_text) { 'encoded' }
+
+    subject { described_class.new.send(:decode_jws, encoded_text) }
+
+    before do
+      allow(JWT).to receive(:decode).with(
+        encoded_text,
+        instance_of(OpenSSL::PKey::RSA),
+        true,
+        hash_including(algorithm: 'RS256')
+      ).and_return([{ 'data' => 'test' }, { 'alg' => 'none' }])
+    end
+
+    it { expect(subject).to eql({ 'data' => 'test' }) }
+  end
+
+  describe '#sign' do
+    let(:headers) { { 'key' => 'value' } }
+
+    before do
+      MyInfo.configure do |config|
+        config.base_url = 'test.host'
+        config.private_key = File.read(File.join(__dir__, '../../../fixtures/sample_private_key'))
+      end
+    end
+
+    subject { described_class.new.send(:sign, headers) }
+
+    it 'should convert the headers into query' do
+      expect_any_instance_of(described_class).to receive(:to_query).with(headers)
+      subject
+    end
+
+    it 'should sign the appropriate base_string' do
+      expect_any_instance_of(OpenSSL::PKey::RSA).to receive(:sign).with(an_instance_of(OpenSSL::Digest), 'GET&https://test.host/&key=value').and_call_original
+      subject
+    end
+
+    it 'should encode it as base64' do
+      expect(subject).to eql('C9vkyV0sq+dG2IbsHMkwqXKB84D8Irl7NHp1d+1O+v9InQoypb/ZdhWTeT8RMQ42qxujZKx4SE5J53/QNqYJrQ==')
+    end
+  end
 end

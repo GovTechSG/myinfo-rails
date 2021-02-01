@@ -2,7 +2,7 @@ env:
   RUBY_VERSION: 2.7
 
 name: tests
-on: [push,pull_request]
+on: [push]
 jobs:
   rubocop-test:
     name: Rubocop
