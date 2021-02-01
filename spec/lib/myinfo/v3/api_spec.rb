@@ -167,10 +167,10 @@ describe MyInfo::V3::Api do
         instance_of(OpenSSL::PKey::RSA),
         true,
         hash_including(algorithm: 'RS256')
-      ).and_return([{'data'=>'test'}, {'alg'=>'none'}])
+      ).and_return([{ 'data' => 'test' }, { 'alg' => 'none' }])
     end
 
-    it { expect(subject).to eql({'data'=>'test'}) }
+    it { expect(subject).to eql({ 'data' => 'test' }) }
   end
 
   describe '#sign' do
