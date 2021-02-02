@@ -17,6 +17,12 @@ module MyInfo
         raise NotImplementedError, 'abstract'
       end
 
+      def call
+        yield
+      rescue StandardError => e
+        Response.new(success: false, data: e)
+      end
+
       def slug
         ''
       end

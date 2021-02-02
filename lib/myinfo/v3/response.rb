@@ -15,8 +15,12 @@ module MyInfo
         @success
       end
 
+      def exception?
+        data.is_a?(StandardError)
+      end
+
       def to_s
-        data
+        exception? ? data.message : data
       end
     end
   end
