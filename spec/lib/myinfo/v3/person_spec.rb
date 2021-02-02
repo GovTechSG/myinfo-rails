@@ -32,6 +32,8 @@ describe MyInfo::V3::Person do
                    'attributes=testing,test2&client_id=test-client&sp_esvcId=service_id').to_return(response)
     end
 
+    subject { described_class.call(access_token: 'token', attributes: %w[testing test2]) }
+
     context 'successful response' do
       let(:response) do
         {
@@ -40,11 +42,23 @@ describe MyInfo::V3::Person do
         }
       end
 
-      subject { described_class.call(access_token: 'token', attributes: %w[testing test2]) }
-
       it 'should return the correct response' do
         expect(subject).to be_success
         expect(subject.data).to eql('')
+      end
+    end
+
+    context 'with exception' do
+      let(:response) { {} }
+
+      before do
+        allow_any_instance_of(Net::HTTP).to receive(:request_get).and_raise(Net::ReadTimeout, 'timeout')
+      end
+
+      it 'should return a false response' do
+        expect(subject).not_to be_success
+        expect(subject).to be_exception
+        expect(subject.to_s).to eql('Net::ReadTimeout with "timeout"')
       end
     end
   end

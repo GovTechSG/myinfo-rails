@@ -28,16 +28,29 @@ describe MyInfo::V3::PersonBasic do
         }
       end
 
-      # TODO: Patch webmock to allow proxy check
       stub_request(:get,
                    Regexp.new(
                      "#{Regexp.escape('https://test.myinfo.endpoint/gov/v3/person-basic/S1234567A/?')}.*"
                    )).to_return(body: '{}')
     end
 
+    subject { described_class.call(nric_fin: 'S1234567A') }
+
     it 'should call the correct endpoint' do
       expect_any_instance_of(Net::HTTP).to receive(:request_get).and_call_original
-      described_class.call(nric_fin: 'S1234567A')
+      subject
+    end
+
+    context 'with exception' do
+      before do
+        allow_any_instance_of(Net::HTTP).to receive(:request_get).and_raise(Net::ReadTimeout, 'timeout')
+      end
+
+      it 'should return a false response' do
+        expect(subject).not_to be_success
+        expect(subject).to be_exception
+        expect(subject.to_s).to eql('Net::ReadTimeout with "timeout"')
+      end
     end
   end
 end

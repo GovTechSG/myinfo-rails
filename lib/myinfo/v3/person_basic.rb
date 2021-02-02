@@ -15,11 +15,13 @@ module MyInfo
       end
 
       def call
-        headers = header(params: params)
-        endpoint_url = "/#{slug}?#{params.to_query}"
+        super do
+          headers = header(params: params)
+          endpoint_url = "/#{slug}?#{params.to_query}"
 
-        response = http.request_get(endpoint_url, headers)
-        parse_response(response)
+          response = http.request_get(endpoint_url, headers)
+          parse_response(response)
+        end
       end
 
       def slug
