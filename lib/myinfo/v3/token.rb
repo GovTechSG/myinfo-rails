@@ -12,12 +12,10 @@ module MyInfo
       end
 
       def call
-        super do
-          headers = header(params: params).merge({ 'Content-Type' => 'application/x-www-form-urlencoded' })
-          response = http.request_post("/#{slug}", params.to_param, headers)
+        headers = header(params: params).merge({ 'Content-Type' => 'application/x-www-form-urlencoded' })
+        response = http.request_post("/#{slug}", params.to_param, headers)
 
-          parse_response(response)
-        end
+        parse_response(response)
       end
 
       def http_method

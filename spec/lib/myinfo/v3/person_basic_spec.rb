@@ -40,17 +40,5 @@ describe MyInfo::V3::PersonBasic do
       expect_any_instance_of(Net::HTTP).to receive(:request_get).and_call_original
       subject
     end
-
-    context 'with exception' do
-      before do
-        allow_any_instance_of(Net::HTTP).to receive(:request_get).and_raise(Net::ReadTimeout, 'timeout')
-      end
-
-      it 'should return a false response' do
-        expect(subject).not_to be_success
-        expect(subject).to be_exception
-        expect(subject.to_s).to eql('Net::ReadTimeout with "timeout"')
-      end
-    end
   end
 end

@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+lib = File.expand_path('lib', __dir__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'myinfo'
+
 Gem::Specification.new do |s|
   s.required_ruby_version = '~> 2.7'
   s.name        = 'myinfo'
-  s.version     = '0.3.0'
+  s.version     = MyInfo::WRAPPER_VERSION
   s.date        = '2020-02-02'
   s.summary     = 'Rails wrapper for MyInfo API'
   s.description = 'Rails wrapper for MyInfo API'
