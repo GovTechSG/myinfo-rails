@@ -4,11 +4,22 @@ module MyInfo
   module V3
     # Simple response wrapper
     class Response
-      attr_accessor :success, :data
+      attr_reader :data
 
       def initialize(success:, data:)
         @success = success
-        @data = data
+
+        if data.is_a?(StandardError)
+          @data = data.message
+          @exception = true
+        else
+          @data = data
+          @exception = false
+        end
+      end
+
+      def exception?
+        @exception
       end
 
       def success?

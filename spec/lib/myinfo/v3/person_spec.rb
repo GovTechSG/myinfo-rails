@@ -44,7 +44,22 @@ describe MyInfo::V3::Person do
 
       it 'should return the correct response' do
         expect(subject).to be_success
+        expect(subject).not_to be_exception
         expect(subject.data).to eql('')
+      end
+    end
+
+    context 'with exception' do
+      let(:response) { {} }
+
+      before do
+        allow_any_instance_of(Net::HTTP).to receive(:request_get).and_raise(Net::ReadTimeout, 'timeout')
+      end
+
+      it 'should return a false response' do
+        expect(subject).not_to be_success
+        expect(subject).to be_exception
+        expect(subject.data).to eql('Net::ReadTimeout with "timeout"')
       end
     end
   end

@@ -21,6 +21,12 @@ module MyInfo
         ''
       end
 
+      def call
+        yield
+      rescue StandardError => e
+        Response.new(success: false, data: e)
+      end
+
       def http_method
         'GET'
       end
@@ -54,6 +60,8 @@ module MyInfo
         else
           Response.new(success: false, data: "#{response.code} - #{response.body}")
         end
+      rescue StandardError => e
+        Response.new(success: false, data: e)
       end
 
       protected
