@@ -18,10 +18,6 @@ require_relative 'myinfo/v3/authorise_url'
 
 # Base MyInfo class
 module MyInfo
-  module Version
-    WRAPPER_VERSION = '0.4.0'
-  end
-
   class << self
     attr_accessor :configuration
   end
