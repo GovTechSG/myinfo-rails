@@ -2,12 +2,12 @@
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'myinfo'
+require 'myinfo/version'
 
 Gem::Specification.new do |s|
   s.required_ruby_version = '~> 2.7'
   s.name        = 'myinfo'
-  s.version     = MyInfo::WRAPPER_VERSION
+  s.version     = MyInfo::Version::WRAPPER_VERSION
   s.date        = '2020-02-02'
   s.summary     = 'Rails wrapper for MyInfo API'
   s.description = 'Rails wrapper for MyInfo API'
