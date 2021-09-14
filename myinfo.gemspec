@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'jwe', '~> 0.4'
   s.add_dependency 'jwt', '~> 2.2'
-  s.add_development_dependency 'rails', '~> 6.1.3'
+  s.add_development_dependency 'rails', '~> 6.1.4'
   s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rspec', '~> 3.10'
   s.add_development_dependency 'rspec-rails', '~> 4.0'
