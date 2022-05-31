@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '~> 2.7'
   s.name        = 'myinfo'
   s.version     = MyInfo::Version::WRAPPER_VERSION
-  s.date        = '2020-02-03'
   s.summary     = 'Rails wrapper for MyInfo API'
   s.description = 'Rails wrapper for MyInfo API'
   s.authors     = ['Lim Yao Jie']
@@ -16,6 +15,7 @@ Gem::Specification.new do |s|
   s.files       = Dir['lib/**/*.rb', 'README.md']
   s.homepage    = 'https://github.com/GovTechSG/myinfo-rails'
   s.license     = 'MIT'
+  s.metadata    = { 'rubygems_mfa_required' => 'true' }
 
   s.add_dependency 'jwe', '~> 0.4'
   s.add_dependency 'jwt', '~> 2.2'
