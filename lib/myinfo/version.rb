@@ -2,6 +2,6 @@
 
 module MyInfo
   module Version
-    WRAPPER_VERSION = '0.5.2'
+    WRAPPER_VERSION = '0.5.3'
   end
 end
