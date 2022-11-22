@@ -41,6 +41,7 @@ module MyInfo
           'Accept' => 'application/json',
           'Cache-Control' => 'no-cache'
         }.tap do |values|
+          values['x-api-key'] = config.gateway_key if config.gateway_key.present?
           values['Authorization'] = auth_header(params: params, access_token: access_token) unless config.sandbox?
 
           if support_gzip?
@@ -79,10 +80,11 @@ module MyInfo
       end
 
       def http
+        url = config.gateway_url || config.base_url
         @http ||= if config.proxy.blank?
-                    Net::HTTP.new(config.base_url, 443)
+                    Net::HTTP.new(url, 443)
                   else
-                    Net::HTTP.new(config.base_url, 443, config.proxy[:address], config.proxy[:port])
+                    Net::HTTP.new(url, 443, config.proxy[:address], config.proxy[:port])
                   end
 
         @http.use_ssl = true

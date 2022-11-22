@@ -12,6 +12,7 @@ describe MyInfo::V3::Api do
     before do
       MyInfo.configure do |config|
         config.sandbox = false
+        config.gateway_key = 'sample_key'
       end
 
       allow_any_instance_of(described_class).to receive(:auth_header).and_return('stubbed')
@@ -30,6 +31,10 @@ describe MyInfo::V3::Api do
 
     it 'should return correct Accept' do
       expect(result).to include({ 'Accept' => 'application/json' })
+    end
+
+    it 'should return correct x-api-key' do
+      expect(result).to include({ 'x-api-key' => 'sample_key' })
     end
   end
 

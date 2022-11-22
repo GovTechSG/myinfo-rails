@@ -10,5 +10,7 @@ if Rails.env.development?
     config.base_url = 'test.api.myinfo.gov.sg'
     config.private_key = File.read(Rails.root.join('config/certs/stg-demoapp-client-privatekey-2018.pem'))
     config.public_cert = File.read(Rails.root.join('config/certs/staging_myinfo_public_cert.cer'))
+    config.gateway_url = 'https://test_gateway_url' #optional - dummy value given here
+    config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' #optional - dummy value given
   end
 end
