@@ -61,14 +61,14 @@ describe MyInfo::Configuration do
     end
   end
 
-  describe 'gateway_url handling' do
+  describe 'gateway_host handling' do
     context 'with https://' do
       before do
         config.gateway_url = 'https://test_gateway_url.something'
       end
 
-      it 'should save correct gateway_url' do
-        expect(config.gateway_url).to eq('test_gateway_url.something')
+      it 'should save correct gateway_host' do
+        expect(config.gateway_host).to eq('test_gateway_url.something')
       end
     end
 
@@ -77,8 +77,8 @@ describe MyInfo::Configuration do
         config.gateway_url = 'https://test_gateway_url.something/something-else'
       end
 
-      it 'should save correct gateway_url' do
-        expect(config.gateway_url).to eq('test_gateway_url.something')
+      it 'should save correct gateway_host' do
+        expect(config.gateway_host).to eq('test_gateway_url.something')
       end
     end
 
@@ -88,7 +88,7 @@ describe MyInfo::Configuration do
       end
 
       it 'should save correct gateway_url' do
-        expect(config.gateway_url).to eq('test_gateway_url.something')
+        expect(config.gateway_host).to eq('test_gateway_url.something')
       end
     end
 
@@ -97,8 +97,30 @@ describe MyInfo::Configuration do
         config.gateway_url = 'test_gateway_url.something/extra-something'
       end
 
-      it 'should save correct gateway_url' do
-        expect(config.gateway_url).to eq('test_gateway_url.something')
+      it 'should save correct gateway_host' do
+        expect(config.gateway_host).to eq('test_gateway_url.something')
+      end
+    end
+  end
+
+  describe 'gateway_path handling' do
+    context 'with gateway_url as empty' do
+      before do
+        config.gateway_url = ''
+      end
+
+      it 'should return gateway_path as empty' do
+        expect(config.gateway_path).to eq('')
+      end
+    end
+
+    context 'with a valid gateway url' do
+      before do
+        config.gateway_url = 'https://test_gateway_url.something/something-else'
+      end
+
+      it 'should return valid gateway_path' do
+        expect(config.gateway_path).to eq('something-else')
       end
     end
   end

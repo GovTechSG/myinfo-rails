@@ -16,6 +16,30 @@ describe MyInfo::V3::PersonBasic do
     it { expect(api.attributes).to eql(MyInfo::Attributes::DEFAULT_VALUES.join(',')) }
   end
 
+  describe '#api_path' do
+    let(:subject) { described_class.new(nric_fin: 'S1234567A') }
+
+    context 'without gateway_url' do
+      it 'should return just slug' do
+        expect(subject.api_path).to eql('gov/v3/person-basic/S1234567A/')
+      end
+    end
+
+    context 'with gateway_url' do
+      before do
+        MyInfo.configuration.gateway_url = 'https://test_gateway_url.something/something-else'
+      end
+
+      after do
+        MyInfo.configuration.gateway_url = nil
+      end
+
+      it 'should return slug along with gateway path' do
+        expect(subject.api_path).to eql('something-else/gov/v3/person-basic/S1234567A/')
+      end
+    end
+  end
+
   describe '#call' do
     before do
       MyInfo.configure do |config|
