@@ -1,6 +1,30 @@
 # frozen_string_literal: true
 
 describe MyInfo::V3::Token do
+  describe '#api_path' do
+    let(:subject) { described_class.new(code: 'test') }
+
+    context 'without gateway_url' do
+      it 'should return just slug' do
+        expect(subject.api_path).to eql('gov/v3/token')
+      end
+    end
+
+    context 'with gateway_url' do
+      before do
+        MyInfo.configuration.gateway_url = 'https://test_gateway_url.something/something-else'
+      end
+
+      after do
+        MyInfo.configuration.gateway_url = nil
+      end
+
+      it 'should return slug along with gateway path' do
+        expect(subject.api_path).to eql('something-else/gov/v3/token')
+      end
+    end
+  end
+
   describe '#call' do
     subject { described_class.call(code: 'test') }
 

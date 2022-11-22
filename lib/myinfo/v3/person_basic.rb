@@ -17,7 +17,7 @@ module MyInfo
       def call
         super do
           headers = header(params: params)
-          endpoint_url = "/#{slug}?#{params.to_query}"
+          endpoint_url = "/#{api_path}?#{params.to_query}"
 
           response = http.request_get(endpoint_url, headers)
           parse_response(response)

@@ -51,6 +51,11 @@ module MyInfo
         end
       end
 
+      def api_path
+        path = config.gateway_path.present? ? "#{config.gateway_path}/" : ''
+        "#{path}#{slug}"
+      end
+
       def parse_response(response)
         if response.code == '200'
           yield
@@ -80,7 +85,7 @@ module MyInfo
       end
 
       def http
-        url = config.gateway_url || config.base_url
+        url = config.gateway_host || config.base_url
         @http ||= if config.proxy.blank?
                     Net::HTTP.new(url, 443)
                   else

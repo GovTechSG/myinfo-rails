@@ -14,7 +14,7 @@ module MyInfo
       def call
         super do
           headers = header(params: params).merge({ 'Content-Type' => 'application/x-www-form-urlencoded' })
-          response = http.request_post("/#{slug}", params.to_param, headers)
+          response = http.request_post("/#{api_path}", params.to_param, headers)
 
           parse_response(response)
         end

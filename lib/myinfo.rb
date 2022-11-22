@@ -30,9 +30,9 @@ module MyInfo
   # Configuration to set various properties needed to use MyInfo
   class Configuration
     attr_accessor :singpass_eservice_id, :app_id, :client_id, :proxy, :private_key, :public_cert, :client_secret,
-                  :redirect_uri, :gateway_key
+                  :redirect_uri, :gateway_url, :gateway_key
 
-    attr_reader :base_url, :gateway_url
+    attr_reader :base_url
     attr_writer :public_facing, :sandbox
 
     def initialize
@@ -49,8 +49,12 @@ module MyInfo
       "https://#{base_url}"
     end
 
-    def gateway_url=(url)
-      @gateway_url = url.sub('https://', '').split('/').first
+    def gateway_host
+      gateway_url&.sub('https://', '')&.split('/')&.first
+    end
+
+    def gateway_path
+      gateway_url.present? ? gateway_url.sub('https://', '').split('/')[1..].join('/') : ''
     end
 
     def public?
