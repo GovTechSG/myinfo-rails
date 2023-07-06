@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     myinfo (0.5.4)
+      jose (~> 0.1.0)
       jwe (~> 0.4)
       jwt (~> 2.2)
 
@@ -80,12 +81,16 @@ GEM
     erubi (1.11.0)
     globalid (1.0.1)
       activesupport (>= 5.0)
+    hamster (3.0.0)
+      concurrent-ruby (~> 1.0)
     hashdiff (1.0.1)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    jose (0.1.0)
+      hamster
     json (2.6.2)
     jwe (0.4.0)
-    jwt (2.5.0)
+    jwt (2.7.1)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
