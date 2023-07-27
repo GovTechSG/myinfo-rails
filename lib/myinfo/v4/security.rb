@@ -37,7 +37,7 @@ module MyInfo
         Base64.urlsafe_encode64(digest, padding: false)
       end
 
-      # not yet tested
+      # done, not yet tested (OpenSSL version)
       def self.generate_ephemeral_keys
         key_pair = OpenSSL::PKey::EC.new("prime256v1")
         key_pair.generate_key
@@ -50,6 +50,7 @@ module MyInfo
         { private_key: private_key, public_key: public_key }
       end
 
+      # done, not yet tested (JOSE version)
       def self.generate_ephemeral_keys_jose
         private_key = JOSE::JWK.generate_key([:ec, "prime256v1"])
         public_key = JOSE::JWK.to_public(private_key)
@@ -57,7 +58,7 @@ module MyInfo
         { private_key: private_key.to_pem, public_key: public_key.to_pem }
       end
 
-      # not yet tested
+      # done, not yet tested
       def get_jwks(jwks_url)
         uri = URI(jwks_url)
         response = Net::HTTP.get_response(uri)
@@ -72,34 +73,18 @@ module MyInfo
         end
       end
 
+      # not done
       def self.decode_jws(compact_jws, public_key)
+        jwks = get_jwks(jwks_url)
+
         JWT.decode(jws, public_key, true, algorithm: 'ES256').first
       end
 
-      def decrypt_jwe_with_key(compact_jwe, decryption_private_key)
-        jwe_parts = compact_jwe.split('.') # header.encryptedKey.iv.ciphertext.tag
-        raise 'Invalid data or signature' if jwe_parts.length != 5
-
-        # Session encryption private key should correspond to the session encryption public key passed in to client assertion
-        key = JOSE::JWK.from_pem(decryption_private_key)
-
-        data = {
-          'type' => 'compact',
-          'protected' => jwe_parts[0],
-          'encrypted_key' => jwe_parts[1],
-          'iv' => jwe_parts[2],
-          'ciphertext' => jwe_parts[3],
-          'tag' => jwe_parts[4],
-          'header' => JSON.parse(JOSE::Util.base64url_decode(jwe_parts[0]).to_s)
-        }
-
-        jwe = JOSE::JWE.from_serialized_compact(data.to_json)
-        result = jwe.decrypt(key)
-        result.payload.to_s
-      rescue => error
-        'Error decrypting JWE'
-      end
-
+      # done & tested
+      def self.decrypt_jwe(jwe, private_key)
+        jwk_private_key = JOSE::JWK.from_pem(private_key)
+        JOSE::JWE.block_decrypt(jwk_private_key, jwe).first
+      end 
 
       # done & tested
       def self.generate_jwk_thumbprint(jwk)
@@ -131,6 +116,7 @@ module MyInfo
         JWT.encode(payload, private_key, 'ES256', headers)
       end
 
+      # not done
       def generateDPoP(url, ath, method, session_ephemeral_key_pair)
         raise NotImplementedError
       end
