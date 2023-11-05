@@ -45,7 +45,7 @@ describe MyInfo::V3::PersonBasic do
       MyInfo.configure do |config|
         config.base_url = 'test.myinfo.endpoint'
         config.singpass_eservice_id = 'service_id'
-        config.private_key = File.read(File.join(__dir__, '../../../fixtures/sample_private_key'))
+        config.private_key = File.read(File.join(__dir__, '../../../fixtures/v3/sample_private_key'))
         config.proxy = {
           address: 'https://some.proxy',
           port: 8080

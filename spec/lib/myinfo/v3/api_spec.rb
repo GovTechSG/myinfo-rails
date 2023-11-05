@@ -56,7 +56,7 @@ describe MyInfo::V3::Api do
     context 'with private_key' do
       before do
         MyInfo.configure do |config|
-          config.private_key = File.read(File.join(__dir__, '../../../fixtures/sample_private_key'))
+          config.private_key = File.read(File.join(__dir__, '../../../fixtures/v3/sample_private_key'))
         end
       end
 
@@ -84,7 +84,7 @@ describe MyInfo::V3::Api do
     context 'with public_cert' do
       before do
         MyInfo.configure do |config|
-          config.public_cert = File.read(File.join(__dir__, '../../../fixtures/sample_cert'))
+          config.public_cert = File.read(File.join(__dir__, '../../../fixtures/v3/sample_cert'))
         end
       end
 
@@ -184,7 +184,7 @@ describe MyInfo::V3::Api do
     before do
       MyInfo.configure do |config|
         config.base_url = 'test.host'
-        config.private_key = File.read(File.join(__dir__, '../../../fixtures/sample_private_key'))
+        config.private_key = File.read(File.join(__dir__, '../../../fixtures/v3/sample_private_key'))
       end
     end
 

@@ -47,8 +47,8 @@ describe MyInfo::V3::Person do
         config.client_id = 'test-client'
         config.sandbox = true
         config.singpass_eservice_id = 'service_id'
-        config.public_cert = File.read(File.join(__dir__, '../../../fixtures/sample_cert'))
-        config.private_key = File.read(File.join(__dir__, '../../../fixtures/sample_private_key'))
+        config.public_cert = File.read(File.join(__dir__, '../../../fixtures/v3/sample_cert'))
+        config.private_key = File.read(File.join(__dir__, '../../../fixtures/v3/sample_private_key'))
       end
 
       stub_request(:get,
