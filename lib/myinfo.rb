@@ -17,6 +17,7 @@ require_relative 'myinfo/v3/person_basic'
 require_relative 'myinfo/v3/authorise_url'
 
 require_relative 'myinfo/v4/session'
+require_relative 'myinfo/v4/authorise_url'
 
 # Base MyInfo class
 module MyInfo
