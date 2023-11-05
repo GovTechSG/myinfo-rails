@@ -22,8 +22,8 @@
     config.public_cert = File.read(Rails.root.join('public_cert_location'))
     config.sandbox = false # optional, false by default
     config.proxy = { address: 'proxy_address', port: 'proxy_port' } # optional, nil by default
-    config.gateway_url = 'https://test_gateway_url' #optional, nil by default
-    config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' #optional, nil by default
+    config.gateway_url = 'https://test_gateway_url' # optional, nil by default
+    config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' # optional, nil by default
   end
 ```
 
