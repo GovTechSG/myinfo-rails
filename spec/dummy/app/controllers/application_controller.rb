@@ -1,11 +1,16 @@
 class ApplicationController < ActionController::Base
   def index
     # Step 1: Redirect to authorise
-    redirect_to MyInfo::V3::AuthoriseUrl.call(
-      nric_fin: 'S9812381D',
-      purpose: 'testing',
-      state: SecureRandom.hex
+    code_verifier, code_challenge = MyInfo::V4::Session.call
+
+    redirect_to MyInfo::V4::AuthoriseUrl.call(
+      purpose: 'demonstration', code_challenge:, nric_fin: 'S9812381D', attributes: 'uinfin name sex race'
     )
+    # redirect_to MyInfo::V3::AuthoriseUrl.call(
+    #   nric_fin: 'S9812381D',
+    #   purpose: 'testing',
+    #   state: SecureRandom.hex
+    # )
 
     # Try PersonBasic if you want
     # response = MyInfo::V3::PersonBasic.call(

@@ -12,7 +12,7 @@ module MyInfo
         code_verifier = SecureRandom.hex(32)
 
         sha256_encoded_code_verifier = Digest::SHA256.digest code_verifier
-        code_challenge = Base64.urlsafe_encode64(sha256_encoded_code_verifier)
+        code_challenge = Base64.urlsafe_encode64(sha256_encoded_code_verifier, padding: false)
 
         [code_verifier, code_challenge]
       end
