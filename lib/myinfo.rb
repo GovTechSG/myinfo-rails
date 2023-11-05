@@ -8,6 +8,7 @@ require_relative 'myinfo/errors'
 
 require_relative 'myinfo/helpers/callable'
 require_relative 'myinfo/helpers/attributes'
+require_relative 'myinfo/helpers/security_helper'
 
 require_relative 'myinfo/v3/response'
 require_relative 'myinfo/v3/api'
@@ -16,8 +17,11 @@ require_relative 'myinfo/v3/person'
 require_relative 'myinfo/v3/person_basic'
 require_relative 'myinfo/v3/authorise_url'
 
+require_relative 'myinfo/v4/response'
+require_relative 'myinfo/v4/api'
 require_relative 'myinfo/v4/session'
 require_relative 'myinfo/v4/authorise_url'
+require_relative 'myinfo/v4/token'
 
 # Base MyInfo class
 module MyInfo
@@ -32,8 +36,18 @@ module MyInfo
 
   # Configuration to set various properties needed to use MyInfo
   class Configuration
-    attr_accessor :singpass_eservice_id, :app_id, :client_id, :proxy, :private_key, :public_cert, :client_secret,
-                  :redirect_uri, :gateway_url, :gateway_key
+    attr_accessor :singpass_eservice_id,
+                  :app_id,
+                  :client_id,
+                  :proxy,
+                  :private_key,
+                  :public_cert,
+                  :private_encryption_key, # added for V4
+                  :private_signing_key, # added for V4
+                  :client_secret,
+                  :redirect_uri,
+                  :gateway_url,
+                  :gateway_key
 
     attr_reader :base_url
     attr_writer :public_facing, :sandbox

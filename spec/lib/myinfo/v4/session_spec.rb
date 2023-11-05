@@ -8,7 +8,7 @@ describe MyInfo::V4::Session do
       code_verifier, code_challenge = described_class.call
 
       expect(code_verifier).to eq('1ee2add6ca7205e61269830220f3ab5243ae861283ed06f0fb47f65a57e43544')
-      expect(code_challenge).to eq('DtrKdNTEchv8SF7IUjlKHfDP3i40vuw_6VMS8eqvkEQ=')
+      expect(code_challenge).to eq('DtrKdNTEchv8SF7IUjlKHfDP3i40vuw_6VMS8eqvkEQ')
     end
   end
 end

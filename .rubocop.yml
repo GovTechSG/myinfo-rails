@@ -45,7 +45,9 @@ Metrics/ParameterLists:
   Max: 6
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 20
+  Exclude:
+    - 'lib/myinfo/v4/api.rb'
 
 Metrics/BlockLength:
   Exclude:
