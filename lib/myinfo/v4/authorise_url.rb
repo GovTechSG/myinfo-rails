@@ -23,7 +23,7 @@ module MyInfo
           code_challenge: code_challenge,
           code_challenge_method: 'S256',
           redirect_uri: config.redirect_uri,
-          client_id: config.client_id,
+          client_id: config.client_id
         }.compact.to_param
 
         endpoint(query_string)
@@ -33,6 +33,7 @@ module MyInfo
         if config.public?
           "#{config.base_url_with_protocol}/#{slug}?#{query_string}"
         else
+          # TODO: update url for gov version
           "#{config.base_url_with_protocol}/#{slug}/#{nric_fin}?#{query_string}"
         end
       end

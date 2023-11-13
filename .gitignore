@@ -10,3 +10,4 @@ pkg/*
 spec/dummy/tmp/*
 spec/dummy/log/*.log
 .idea
+.byebug_history

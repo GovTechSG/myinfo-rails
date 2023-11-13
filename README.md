@@ -24,6 +24,7 @@
     config.proxy = { address: 'proxy_address', port: 'proxy_port' } # optional, nil by default
     config.gateway_url = 'https://test_gateway_url' # optional, nil by default
     config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' # optional, nil by default
+    config.authorise_jwks_base_url = "test.authorise.singpass.gov.sg"
   end
 ```
 

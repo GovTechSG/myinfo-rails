@@ -3,6 +3,8 @@
 require 'jwe'
 require 'jwt'
 
+JWT.configuration.jwk.kid_generator = ::JWT::JWK::Thumbprint
+
 # Helper class for security related codes
 class SecurityHelper
   class << self
@@ -35,16 +37,14 @@ class SecurityHelper
         exp: now + 120
       }
 
-      payload[:ath] = access_token if access_token.present?
+      if access_token.present?
+        payload[:ath] = Base64.urlsafe_encode64(Digest::SHA256.digest(access_token), padding: false)
+      end
 
       private_key = OpenSSL::PKey.read(key_pairs[:private_key])
-      jwk = OpenSSL::PKey.read(key_pairs[:public_key])
+      jwk = JWT::JWK.new(OpenSSL::PKey.read(key_pairs[:public_key]), { use: 'sig', alg: 'ES256' })
 
-      headers = {
-        'typ' => 'dpop+jwt',
-        'jwk' => jwk
-      }
-      JWT.encode(payload, private_key, 'ES256', headers)
+      JWT.encode(payload, private_key, 'ES256', { typ: 'dpop+jwt', jwk: jwk.export })
     end
 
     def generate_client_assertion(client_id, url, thumbprint, private_signing_key)
@@ -62,10 +62,17 @@ class SecurityHelper
       }
 
       headers = {
-        'typ' => 'JWT'
+        typ: 'JWT',
+        alg: 'ES256'
       }
 
       JWT.encode(payload, private_signing_key, 'ES256', headers)
+    end
+
+    def thumbprint(key)
+      jwk = JWT::JWK.new(OpenSSL::PKey.read(key), { use: 'sig', alg: 'ES256' })
+      jwk_hash = jwk.export
+      jwk_hash[:kid]
     end
   end
 end

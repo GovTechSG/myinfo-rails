@@ -6,8 +6,8 @@ module MyInfo
     class Token < Api
       attr_accessor :auth_code, :code_verifier
 
-      def initialize(auth_code:, code_verifier:)
-        super()
+      def initialize(key_pairs:, auth_code:, code_verifier:)
+        super(key_pairs: key_pairs)
         @auth_code = auth_code
         @code_verifier = code_verifier
       end
@@ -44,7 +44,7 @@ module MyInfo
           client_assertion: SecurityHelper.generate_client_assertion(
             config.client_id,
             endpoint,
-            generate_thumbprint,
+            thumbprint,
             private_signing_key
           ),
           client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
