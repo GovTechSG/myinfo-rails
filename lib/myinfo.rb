@@ -22,6 +22,7 @@ require_relative 'myinfo/v4/api'
 require_relative 'myinfo/v4/session'
 require_relative 'myinfo/v4/authorise_url'
 require_relative 'myinfo/v4/token'
+require_relative 'myinfo/v4/person'
 
 # Base MyInfo class
 module MyInfo
@@ -42,12 +43,14 @@ module MyInfo
                   :proxy,
                   :private_key,
                   :public_cert,
-                  :private_encryption_key, # added for V4
-                  :private_signing_key, # added for V4
                   :client_secret,
                   :redirect_uri,
                   :gateway_url,
-                  :gateway_key
+                  :gateway_key,
+                  :authorise_jwks_base_url, # added for v4
+                  :subentity_id, # added for v4, UEN of SaaS partner's client that will be receiving the person data.
+                  :private_encryption_key, # added for V4
+                  :private_signing_key # added for V4
 
     attr_reader :base_url
     attr_writer :public_facing, :sandbox

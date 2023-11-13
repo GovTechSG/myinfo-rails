@@ -10,11 +10,11 @@ if Rails.env.development?
     config.base_url = 'test.api.myinfo.gov.sg'
     config.private_key = File.read(Rails.root.join('config/certs/stg-demoapp-client-privatekey-2018.pem'))
     config.public_cert = File.read(Rails.root.join('config/certs/staging_myinfo_public_cert.cer'))
-    config.gateway_url = 'https://test_gateway_url' # optional - dummy value given here
-    config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' # optional - dummy value given
+    # config.gateway_url = 'https://test_gateway_url' # optional - dummy value given here
+    # config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' # optional - dummy value given
     # MyInfo V4 stuffs
     config.private_encryption_key = File.read(Rails.root.join('config/certs/sample-encryption-private-key.pem'))
     config.private_signing_key = File.read(Rails.root.join('config/certs/sample-signing-private-key.pem'))
-    config.authorise_jwks_base_url = "authorise.singpass.gov.sg"
+    config.authorise_jwks_base_url = "test.authorise.singpass.gov.sg"
   end
 end

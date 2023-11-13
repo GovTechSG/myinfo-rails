@@ -5,10 +5,10 @@ module MyInfo
   module Attributes
     DEFAULT_VALUES = %i[name sex race dob residentialstatus email mobileno regadd].freeze
 
-    def self.parse(attributes)
+    def self.parse(attributes, separator = ',')
       attributes ||= DEFAULT_VALUES
 
-      attributes.is_a?(String) ? attributes : attributes.join(',')
+      attributes.is_a?(String) ? attributes : attributes.join(separator)
     end
   end
 end

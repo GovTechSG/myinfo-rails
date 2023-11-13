@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
+require 'jwt'
+require 'jose'
+
 module MyInfo
   module V4
     # Base API class
     class Api
       extend Callable
 
-      attr_reader :key_pairs
+      attr_reader :key_pairs, :thumbprint
 
-      def initialize
-        @key_pairs = SecurityHelper.generate_session_key_pair
+      def initialize(key_pairs:)
+        @key_pairs = key_pairs
+        @thumbprint = SecurityHelper.thumbprint(key_pairs[:public_key])
       end
 
       def endpoint
@@ -48,7 +52,7 @@ module MyInfo
 
           unless config.sandbox?
             values['Authorization'] = auth_header(access_token: access_token) if access_token.present?
-            values['DPoP'] = SecurityHelper.generate_dpop(endpoint, access_token, http_method, key_pairs)
+            values['dpop'] = SecurityHelper.generate_dpop(endpoint, access_token, http_method, key_pairs)
           end
 
           if support_gzip?
@@ -91,6 +95,20 @@ module MyInfo
         @http
       end
 
+      def jwks_http
+        url = config.gateway_host || config.authorise_jwks_base_url
+        @jwks_http_client = if config.proxy.blank?
+                              Net::HTTP.new(url, 443)
+                            else
+                              Net::HTTP.new(url, 443, config.proxy[:address], config.proxy[:port])
+                            end
+
+        @jwks_http_client.use_ssl = true
+        @jwks_http_client.verify_mode = OpenSSL::SSL::VERIFY_PEER
+
+        @jwks_http_client
+      end
+
       def config
         MyInfo.configuration
       end
@@ -123,8 +141,11 @@ module MyInfo
         "DPoP #{access_token}"
       end
 
-      def generate_thumbprint
-        OpenSSL::Digest::SHA256.new(Base64.encode64(key_pairs[:public_key]))
+      def decrypt_jwe(value)
+        jwk = JOSE::JWK.from_key(private_encryption_key)
+        jwt = JOSE::JWE.block_decrypt(jwk, value).first
+
+        JSON.parse(JOSE::JWS.peek_payload(jwt), { symbolize_names: true })
       end
     end
   end

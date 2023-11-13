@@ -2,12 +2,16 @@
 
 describe MyInfo::V4::Token do
   describe '#call' do
-    subject { described_class.call(auth_code: 'somecode', code_verifier: 'verifier') }
+    subject { described_class.call(key_pairs: key_pairs, auth_code: 'somecode', code_verifier: 'verifier') }
+
+    let(:key_pairs) do
+      { private_key: 'private', public_key: 'public' }
+    end
 
     before do
       MyInfo.configure do |config|
         config.base_url = 'test.myinfo.endpoint'
-        config.singpass_eservice_id = 'service_id'
+        config.public_facing = true
         config.client_id = 'test_client'
         config.client_secret = 'test_secret'
         config.private_encryption_key = File.read(File.join(__dir__,
@@ -18,10 +22,11 @@ describe MyInfo::V4::Token do
         config.redirect_uri = 'redirect'
       end
 
+      allow(SecurityHelper).to receive(:thumbprint).with('public').and_return('thumbprint')
       allow(SecurityHelper).to receive(:generate_dpop) { 'some dpop values' }
       allow(SecurityHelper).to receive(:generate_client_assertion) { 'some-client-assertion' }
 
-      stub_request(:post, 'https://test.myinfo.endpoint/gov/v4/token').with(
+      stub_request(:post, 'https://test.myinfo.endpoint/com/v4/token').with(
         body: {
           'client_assertion' => 'some-client-assertion',
           'client_assertion_type' => 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',

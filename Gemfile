@@ -2,6 +2,9 @@
 
 source 'http://rubygems.org'
 
+gem 'byebug', '~> 11.1'
+# TODO: find an alternative for jose as it is not maintained
+gem 'jose', git: 'https://github.com/kmye/ruby-jose'
 gem 'puma'
 
 group :test do
