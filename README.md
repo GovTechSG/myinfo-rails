@@ -2,10 +2,65 @@
 
 ![tests](https://github.com/GovTechSG/myinfo/workflows/tests/badge.svg?branch=main)
 
+# MyInfo V4
+
+[MyInfo Documentation (Public)](https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v4.0.html)
+
+Note: Currently this gem only supports `public_facing = true` for MyInfo V4 API.
+
+## Basic Setup (Public)
+
+1. `bundle add myinfo`
+2. Create a `config/initializers/myinfo.rb` and add the required configuration based on your environment.
+```ruby
+  MyInfo.configure do |config|
+    config.app_id = ''
+    config.client_id = ''
+    config.client_secret = ''
+    config.base_url = 'test.api.myinfo.gov.sg'
+    config.redirect_uri = 'https://localhost:3001/callback'
+    config.public_facing = true
+    config.sandbox = false # optional, false by default
+    config.private_encryption_key = ''
+    config.private_signing_key = ''
+    config.authorise_jwks_base_url = "test.authorise.singpass.gov.sg"
+    # setup proxy here if needed
+    config.proxy = { address: 'proxy_address', port: 'proxy_port' } # optional, nil by default
+    config.gateway_url = 'https://test_gateway_url' # optional, nil by default
+    config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' # optional, nil by default
+  end
+```
+
+3. Generate the code verifier and code challenge and manage a session to their frontend to link the code_verifier and code_challenge.
+```ruby
+code_verifier, code_challenge = MyInfo::V4::Session.call
+```
+
+4. On callback url triggered, obtain a `MyInfo::V4::Token`. This token can only be used once.
+
+```ruby
+key_pairs = SecurityHelper.generate_session_key_pair
+response = MyInfo::V4::Token.call(
+  key_pairs: key_pairs,
+  auth_code: params[:code],
+  code_verifier: session[:code_verifier]
+)
+
+access_token = response.data
+```
+
+5. Obtain the `access_token` from the `response` and query for `MyInfo::V4::Person`:
+```ruby
+response = MyInfo::V4::Person.call(key_pairs: key_pairs, access_token: access_token)
+```
+
+
+# MyInfo V3
 
 [MyInfo Documentation (Public)](https://public.cloud.myinfo.gov.sg/myinfo/api/myinfo-kyc-v3.1.0.html)
 
 [MyInfo Documentation (Government)](https://public.cloud.myinfo.gov.sg/myinfo/tuo/myinfo-tuo-specs.html)
+
 ## Basic Setup (Public)
 
 1. `bundle add myinfo`
@@ -24,7 +79,6 @@
     config.proxy = { address: 'proxy_address', port: 'proxy_port' } # optional, nil by default
     config.gateway_url = 'https://test_gateway_url' # optional, nil by default
     config.gateway_key = '44d953c796cccebcec9bdc826852857ab412fbe2' # optional, nil by default
-    config.authorise_jwks_base_url = "test.authorise.singpass.gov.sg"
   end
 ```
 
