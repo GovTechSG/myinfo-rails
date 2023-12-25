@@ -16,7 +16,7 @@ describe MyInfo::V4::AuthoriseUrl do
                            purpose: 'to test', code_challenge: 'somecode')
     end
 
-    it 'should return the correct url' do
+    it 'returns the correct url' do
       expect(subject).to eql(
         'https://test.endpoint/gov/v4/authorize/S1234567A' \
         '?client_id=client' \
@@ -31,6 +31,11 @@ describe MyInfo::V4::AuthoriseUrl do
   end
 
   context 'when configuration is public' do
+    subject do
+      described_class.call(nric_fin: 'S1234567A', attributes: %w[name job],
+                           purpose: 'to test', code_challenge: 'somecode')
+    end
+
     before do
       MyInfo.configuration.public_facing = true
     end
@@ -39,12 +44,7 @@ describe MyInfo::V4::AuthoriseUrl do
       MyInfo.configuration.public_facing = false
     end
 
-    subject do
-      described_class.call(nric_fin: 'S1234567A', attributes: %w[name job],
-                           purpose: 'to test', code_challenge: 'somecode')
-    end
-
-    it 'should return the correct url' do
+    it 'returns the correct url' do
       expect(subject).to eql(
         'https://test.endpoint/com/v4/authorize' \
         '?client_id=client' \

@@ -17,10 +17,10 @@ describe MyInfo::V3::PersonBasic do
   end
 
   describe '#api_path' do
-    let(:subject) { described_class.new(nric_fin: 'S1234567A') }
+    subject { described_class.new(nric_fin: 'S1234567A') }
 
     context 'without gateway_url' do
-      it 'should return just slug' do
+      it 'returns just slug' do
         expect(subject.api_path).to eql('gov/v3/person-basic/S1234567A/')
       end
     end
@@ -34,13 +34,15 @@ describe MyInfo::V3::PersonBasic do
         MyInfo.configuration.gateway_url = nil
       end
 
-      it 'should return slug along with gateway path' do
+      it 'returns slug along with gateway path' do
         expect(subject.api_path).to eql('something-else/gov/v3/person-basic/S1234567A/')
       end
     end
   end
 
   describe '#call' do
+    subject { described_class.call(nric_fin: 'S1234567A') }
+
     before do
       MyInfo.configure do |config|
         config.base_url = 'test.myinfo.endpoint'
@@ -58,14 +60,12 @@ describe MyInfo::V3::PersonBasic do
                    )).to_return(body: '{}')
     end
 
-    subject { described_class.call(nric_fin: 'S1234567A') }
-
-    it 'should call the correct endpoint' do
+    it 'calls the correct endpoint' do
       expect_any_instance_of(Net::HTTP).to receive(:request_get).and_call_original
       subject
     end
 
-    it 'should return a true response' do
+    it 'returns a true response' do
       expect(subject).to be_success
       expect(subject).not_to be_exception
       expect(subject.data).to eql({})
@@ -76,7 +76,7 @@ describe MyInfo::V3::PersonBasic do
         allow_any_instance_of(Net::HTTP).to receive(:request_get).and_raise(Net::ReadTimeout, 'timeout')
       end
 
-      it 'should return a false response' do
+      it 'returns a false response' do
         expect(subject).not_to be_success
         expect(subject).to be_exception
         expect(subject.data).to eql('Net::ReadTimeout with "timeout"')
