@@ -3,7 +3,7 @@
 require 'jwe'
 require 'jwt'
 
-JWT.configuration.jwk.kid_generator = ::JWT::JWK::Thumbprint
+JWT.configuration.jwk.kid_generator = JWT::JWK::Thumbprint
 
 # Helper class for security related codes
 class SecurityHelper

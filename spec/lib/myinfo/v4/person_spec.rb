@@ -9,8 +9,8 @@ describe MyInfo::V4::Person do
     end
 
     allow(SecurityHelper).to receive(:thumbprint).with('public').and_return('thumbprint')
-    allow(SecurityHelper).to receive(:generate_dpop) { 'some dpop values' }
-    allow(SecurityHelper).to receive(:generate_client_assertion) { 'some-client-assertion' }
+    allow(SecurityHelper).to receive_messages(generate_dpop: 'some dpop values',
+                                              generate_client_assertion: 'some-client-assertion')
 
     allow(JWT).to receive(:decode).and_return([{ 'sub' => '9E9B2260-47B8-455B-89B5-C48F4DB98322' }])
 
@@ -87,12 +87,12 @@ describe MyInfo::V4::Person do
 
       before do
         stub_request(:get, 'https://test.myinfo.endpoint/com/v4/person/9E9B2260-47B8-455B-89B5-C48F4DB98322?scope=name%20sex%20race%20dob')
-          .to_return(status: 200, body: '', headers: {'Content-Type' => 'application/json'} )
+          .to_return(status: 200, body: '', headers: { 'Content-Type' => 'application/json' })
 
         allow_any_instance_of(described_class).to receive(:decrypt_jwe).and_return({})
       end
 
-      it 'should return a true response' do
+      it 'returns a true response' do
         expect(subject).to be_success
         expect(subject).not_to be_exception
         expect(subject.data).to eql({})

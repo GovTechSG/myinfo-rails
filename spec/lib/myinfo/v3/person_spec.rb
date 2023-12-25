@@ -17,10 +17,10 @@ describe MyInfo::V3::Person do
   end
 
   describe '#api_path' do
-    let(:subject) { described_class.new(access_token: 'token') }
+    subject { described_class.new(access_token: 'token') }
 
     context 'without gateway_url' do
-      it 'should return just slug' do
+      it 'returns just slug' do
         expect(subject.api_path).to eql('gov/v3/person/S1234567A/')
       end
     end
@@ -34,13 +34,15 @@ describe MyInfo::V3::Person do
         MyInfo.configuration.gateway_url = nil
       end
 
-      it 'should return slug along with gateway path' do
+      it 'returns slug along with gateway path' do
         expect(subject.api_path).to eql('something-else/gov/v3/person/S1234567A/')
       end
     end
   end
 
   describe '#call' do
+    subject { described_class.call(access_token: 'token', attributes: %w[testing test2]) }
+
     before do
       MyInfo.configure do |config|
         config.base_url = 'test.myinfo.endpoint'
@@ -56,9 +58,7 @@ describe MyInfo::V3::Person do
                    'attributes=testing,test2&client_id=test-client&sp_esvcId=service_id').to_return(response)
     end
 
-    subject { described_class.call(access_token: 'token', attributes: %w[testing test2]) }
-
-    context 'successful response' do
+    context 'when successful response' do
       let(:response) do
         {
           body: '',
@@ -66,7 +66,7 @@ describe MyInfo::V3::Person do
         }
       end
 
-      it 'should return the correct response' do
+      it 'returns the correct response' do
         expect(subject).to be_success
         expect(subject).not_to be_exception
         expect(subject.data).to eql('')
@@ -80,7 +80,7 @@ describe MyInfo::V3::Person do
         allow_any_instance_of(Net::HTTP).to receive(:request_get).and_raise(Net::ReadTimeout, 'timeout')
       end
 
-      it 'should return a false response' do
+      it 'returns a false response' do
         expect(subject).not_to be_success
         expect(subject).to be_exception
         expect(subject.data).to eql('Net::ReadTimeout with "timeout"')

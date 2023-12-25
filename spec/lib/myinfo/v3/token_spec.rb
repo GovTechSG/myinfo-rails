@@ -2,10 +2,10 @@
 
 describe MyInfo::V3::Token do
   describe '#api_path' do
-    let(:subject) { described_class.new(code: 'test') }
+    subject { described_class.new(code: 'test') }
 
     context 'without gateway_url' do
-      it 'should return just slug' do
+      it 'returns just slug' do
         expect(subject.api_path).to eql('gov/v3/token')
       end
     end
@@ -19,7 +19,7 @@ describe MyInfo::V3::Token do
         MyInfo.configuration.gateway_url = nil
       end
 
-      it 'should return slug along with gateway path' do
+      it 'returns slug along with gateway path' do
         expect(subject.api_path).to eql('something-else/gov/v3/token')
       end
     end
@@ -46,7 +46,7 @@ describe MyInfo::V3::Token do
       ).to_return(response)
     end
 
-    context 'successful response' do
+    context 'when successful response' do
       let(:response) do
         {
           body: { access_token: 'SomeJWTAccessToken' }.to_json,
@@ -54,13 +54,13 @@ describe MyInfo::V3::Token do
         }
       end
 
-      it 'should return correct data' do
+      it 'returns correct data' do
         expect(subject).to be_success
         expect(subject.data).to eql('SomeJWTAccessToken')
       end
     end
 
-    context 'unsuccessful response - 400' do
+    context 'when unsuccessful response - 400' do
       let(:response) do
         {
           status: 400,
@@ -69,13 +69,13 @@ describe MyInfo::V3::Token do
         }
       end
 
-      it 'should return correct data' do
+      it 'returns correct data' do
         expect(subject).not_to be_success
         expect(subject.data).to eql('400 - error')
       end
     end
 
-    context 'unsuccessful response - 401' do
+    context 'when unsuccessful response - 401' do
       let(:response) do
         {
           status: 400,
@@ -84,13 +84,13 @@ describe MyInfo::V3::Token do
         }
       end
 
-      it 'should return correct data' do
+      it 'returns correct data' do
         expect(subject).not_to be_success
         expect(subject.data).to eql('401 - error')
       end
     end
 
-    context 'unexpected response' do
+    context 'when unexpected response' do
       let(:response) do
         {
           status: 500,
@@ -99,7 +99,7 @@ describe MyInfo::V3::Token do
         }
       end
 
-      it 'should return correct data' do
+      it 'returns correct data' do
         expect(subject).not_to be_success
         expect(subject.data).to eql('500 - some unexpected message')
       end
@@ -112,7 +112,7 @@ describe MyInfo::V3::Token do
         allow_any_instance_of(Net::HTTP).to receive(:request_post).and_raise(Net::ReadTimeout, 'timeout')
       end
 
-      it 'should return a false response' do
+      it 'returns a false response' do
         expect(subject).not_to be_success
         expect(subject).to be_exception
         expect(subject.data).to eql('Net::ReadTimeout with "timeout"')

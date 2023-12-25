@@ -9,7 +9,7 @@ describe MyInfo::Configuration do
     config.gateway_key = 'sample_key'
   end
 
-  it 'should have correct attributes' do
+  it 'has correct attributes' do
     expect(config).not_to be_public
     expect(config).not_to be_sandbox
     expect(config.client_id).to eql('client_id')
@@ -25,7 +25,7 @@ describe MyInfo::Configuration do
         config.base_url = 'https://test.something'
       end
 
-      it 'should save correct base_url' do
+      it 'saves correct base_url' do
         expect(config.base_url).to eq('test.something')
       end
     end
@@ -35,7 +35,7 @@ describe MyInfo::Configuration do
         config.base_url = 'https://test.something/something-else'
       end
 
-      it 'should save correct base_url' do
+      it 'saves correct base_url' do
         expect(config.base_url).to eq('test.something')
       end
     end
@@ -45,7 +45,7 @@ describe MyInfo::Configuration do
         config.base_url = 'test.something'
       end
 
-      it 'should save correct base_url' do
+      it 'saves correct base_url' do
         expect(config.base_url).to eq('test.something')
       end
     end
@@ -55,7 +55,7 @@ describe MyInfo::Configuration do
         config.base_url = 'test.something/extra-something'
       end
 
-      it 'should save correct base_url' do
+      it 'saves correct base_url' do
         expect(config.base_url).to eq('test.something')
       end
     end
@@ -67,7 +67,7 @@ describe MyInfo::Configuration do
         config.gateway_url = 'https://test_gateway_url.something'
       end
 
-      it 'should save correct gateway_host' do
+      it 'saves correct gateway_host' do
         expect(config.gateway_host).to eq('test_gateway_url.something')
       end
     end
@@ -77,7 +77,7 @@ describe MyInfo::Configuration do
         config.gateway_url = 'https://test_gateway_url.something/something-else'
       end
 
-      it 'should save correct gateway_host' do
+      it 'saves correct gateway_host' do
         expect(config.gateway_host).to eq('test_gateway_url.something')
       end
     end
@@ -87,7 +87,7 @@ describe MyInfo::Configuration do
         config.gateway_url = 'test_gateway_url.something'
       end
 
-      it 'should save correct gateway_url' do
+      it 'saves correct gateway_url' do
         expect(config.gateway_host).to eq('test_gateway_url.something')
       end
     end
@@ -97,7 +97,7 @@ describe MyInfo::Configuration do
         config.gateway_url = 'test_gateway_url.something/extra-something'
       end
 
-      it 'should save correct gateway_host' do
+      it 'saves correct gateway_host' do
         expect(config.gateway_host).to eq('test_gateway_url.something')
       end
     end
@@ -109,7 +109,7 @@ describe MyInfo::Configuration do
         config.gateway_url = ''
       end
 
-      it 'should return gateway_path as empty' do
+      it 'returns gateway_path as empty' do
         expect(config.gateway_path).to eq('')
       end
     end
@@ -119,7 +119,7 @@ describe MyInfo::Configuration do
         config.gateway_url = 'https://test_gateway_url.something/something-else'
       end
 
-      it 'should return valid gateway_path' do
+      it 'returns valid gateway_path' do
         expect(config.gateway_path).to eq('something-else')
       end
     end

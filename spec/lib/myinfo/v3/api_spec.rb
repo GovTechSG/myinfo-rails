@@ -21,19 +21,19 @@ describe MyInfo::V3::Api do
     let(:api) { described_class.new }
     let(:result) { api.header(params: { test: 'test' }) }
 
-    it 'should return the correct Content-Type' do
+    it 'returns the correct Content-Type' do
       expect(result).to include({ 'Content-Type' => 'application/json' })
     end
 
-    it 'should return correct Authorization header' do
+    it 'returns correct Authorization header' do
       expect(result).to include({ 'Authorization' => 'stubbed' })
     end
 
-    it 'should return correct Accept' do
+    it 'returns correct Accept' do
       expect(result).to include({ 'Accept' => 'application/json' })
     end
 
-    it 'should return correct x-api-key' do
+    it 'returns correct x-api-key' do
       expect(result).to include({ 'x-api-key' => 'sample_key' })
     end
   end
@@ -41,14 +41,14 @@ describe MyInfo::V3::Api do
   describe '#private_key' do
     let(:api) { described_class.new }
 
-    context 'no private_key in configuration' do
+    context 'when no private_key in configuration' do
       before do
         MyInfo.configure do |config|
           config.private_key = nil
         end
       end
 
-      it 'should raise an error' do
+      it 'raises an error' do
         expect { api.send(:private_key) }.to raise_error(MyInfo::MissingConfigurationError)
       end
     end
@@ -60,7 +60,7 @@ describe MyInfo::V3::Api do
         end
       end
 
-      it 'should return an RSA instance' do
+      it 'returns an RSA instance' do
         expect(api.send(:private_key)).to be_a(OpenSSL::PKey::RSA)
       end
     end
@@ -69,14 +69,14 @@ describe MyInfo::V3::Api do
   describe '#public_key' do
     let(:api) { described_class.new }
 
-    context 'no public_cert in configuration' do
+    context 'when no public_cert in configuration' do
       before do
         MyInfo.configure do |config|
           config.public_cert = nil
         end
       end
 
-      it 'should raise an error' do
+      it 'raises an error' do
         expect { api.send(:public_key) }.to raise_error(MyInfo::MissingConfigurationError)
       end
     end
@@ -88,13 +88,15 @@ describe MyInfo::V3::Api do
         end
       end
 
-      it 'should return an RSA instance' do
+      it 'returns an RSA instance' do
         expect(api.send(:public_key)).to be_a(OpenSSL::PKey::RSA)
       end
     end
   end
 
   describe '#auth_header' do
+    subject { described_class.new.send(:auth_header, params: params, access_token: access_token) }
+
     let(:access_token) { nil }
 
     before do
@@ -106,13 +108,11 @@ describe MyInfo::V3::Api do
       allow_any_instance_of(described_class).to receive(:sign).and_return('signed')
     end
 
-    subject { described_class.new.send(:auth_header, params: params, access_token: access_token) }
-
     # rubocop:disable Layout/LineLength
     context 'with additional params' do
       let(:params) { { 'key' => 'value' } }
 
-      it 'should return the correct auth header' do
+      it 'returns the correct auth header' do
         expect(subject).to match(/PKI_SIGN app_id="test-app",nonce="nonce",signature_method="RS256",timestamp=".*",key="value",signature="signed"/)
       end
     end
@@ -121,7 +121,7 @@ describe MyInfo::V3::Api do
       let(:params) { {} }
       let(:access_token) { 'token' }
 
-      it 'should return the correct auth header' do
+      it 'returns the correct auth header' do
         expect(subject).to match(/PKI_SIGN app_id="test-app",nonce="nonce",signature_method="RS256",timestamp=".*",signature="signed",Bearer token/)
       end
     end
@@ -132,28 +132,25 @@ describe MyInfo::V3::Api do
     let(:encrypted_text) { 'encrypted' }
     let(:decrypted_text) { '"decrypted"' }
 
-    context 'sandbox' do
+    context 'when in sandbox mode' do
+      subject { described_class.new.send(:decrypt_jwe, { 'key' => 'value' }.to_json) }
+
       before do
         MyInfo.configure do |config|
           config.sandbox = true
         end
       end
 
-      subject { described_class.new.send(:decrypt_jwe, { 'key' => 'value' }.to_json) }
-
       it { expect(subject).to eql({ 'key' => 'value' }) }
     end
 
-    context 'not sandbox' do
+    context 'when not in sandbox mode' do
+      subject { described_class.new.send(:decrypt_jwe, encrypted_text) }
+
       before do
         MyInfo.configure do |config|
           config.sandbox = false
         end
-      end
-
-      subject { described_class.new.send(:decrypt_jwe, encrypted_text) }
-
-      before do
         allow(JWE).to receive(:decrypt).with(encrypted_text, instance_of(OpenSSL::PKey::RSA)).and_return(decrypted_text)
       end
 
@@ -162,9 +159,9 @@ describe MyInfo::V3::Api do
   end
 
   describe '#decode_jws' do
-    let(:encoded_text) { 'encoded' }
-
     subject { described_class.new.send(:decode_jws, encoded_text) }
+
+    let(:encoded_text) { 'encoded' }
 
     before do
       allow(JWT).to receive(:decode).with(
@@ -179,6 +176,8 @@ describe MyInfo::V3::Api do
   end
 
   describe '#sign' do
+    subject { described_class.new.send(:sign, headers) }
+
     let(:headers) { { 'key' => 'value' } }
 
     before do
@@ -188,19 +187,17 @@ describe MyInfo::V3::Api do
       end
     end
 
-    subject { described_class.new.send(:sign, headers) }
-
-    it 'should convert the headers into query' do
+    it 'converts the headers into query' do
       expect_any_instance_of(described_class).to receive(:to_query).with(headers)
       subject
     end
 
-    it 'should sign the appropriate base_string' do
+    it 'signs the appropriate base_string' do
       expect_any_instance_of(OpenSSL::PKey::RSA).to receive(:sign).with(an_instance_of(OpenSSL::Digest), 'GET&https://test.host/&key=value').and_call_original
       subject
     end
 
-    it 'should encode it as base64' do
+    it 'encodes it as base64' do
       expect(subject).to eql('C9vkyV0sq+dG2IbsHMkwqXKB84D8Irl7NHp1d+1O+v9InQoypb/ZdhWTeT8RMQ42qxujZKx4SE5J53/QNqYJrQ==')
     end
   end

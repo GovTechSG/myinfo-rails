@@ -10,13 +10,13 @@ describe MyInfo::V3::AuthoriseUrl do
     end
   end
 
-  context 'correct parameters' do
+  context 'with correct parameters' do
     subject do
       described_class.call(nric_fin: 'S1234567A', attributes: %w[name job],
                            purpose: 'to test', state: 'some state')
     end
 
-    it 'should return the correct url' do
+    it 'returns the correct url' do
       expect(subject).to eql(
         'https://test.endpoint/gov/v3/authorise/S1234567A/' \
         '?attributes=name%2Cjob' \
@@ -30,7 +30,13 @@ describe MyInfo::V3::AuthoriseUrl do
       )
     end
   end
-  context 'public' do
+
+  context 'when public_facing is `true`' do
+    subject do
+      described_class.call(nric_fin: 'S1234567A', attributes: %w[name job],
+                           purpose: 'to test', state: 'some state')
+    end
+
     before do
       MyInfo.configuration.public_facing = true
     end
@@ -39,12 +45,7 @@ describe MyInfo::V3::AuthoriseUrl do
       MyInfo.configuration.public_facing = false
     end
 
-    subject do
-      described_class.call(nric_fin: 'S1234567A', attributes: %w[name job],
-                           purpose: 'to test', state: 'some state')
-    end
-
-    it 'should return the correct url' do
+    it 'returns the correct url' do
       expect(subject).to eql(
         'https://test.endpoint/com/v3/authorise/' \
         '?attributes=name%2Cjob' \

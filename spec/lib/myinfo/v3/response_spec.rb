@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe MyInfo::V3::Response do
-  context 'successful' do
+  context 'when successful' do
     subject { described_class.new(success: true, data: 'some data') }
 
     it { expect(subject).to be_success }
@@ -9,7 +9,7 @@ describe MyInfo::V3::Response do
     it { expect(subject.to_s).to eql('some data') }
   end
 
-  context 'exception' do
+  context 'when exception' do
     subject { described_class.new(success: false, data: StandardError.new('test')) }
 
     it { expect(subject).to be_exception }

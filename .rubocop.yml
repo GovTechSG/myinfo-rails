@@ -1,3 +1,6 @@
+require:
+  - rubocop-rspec
+
 AllCops:
   TargetRubyVersion: 2.7
   SuggestExtensions: false
@@ -55,3 +58,24 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Max: 150
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+Gemspec/DevelopmentDependencies:
+  Enabled: false
