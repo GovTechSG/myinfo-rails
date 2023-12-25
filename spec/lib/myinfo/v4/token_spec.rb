@@ -13,7 +13,6 @@ describe MyInfo::V4::Token do
         config.base_url = 'test.myinfo.endpoint'
         config.public_facing = true
         config.client_id = 'test_client'
-        config.client_secret = 'test_secret'
         config.private_encryption_key = File.read(File.join(__dir__,
                                                             '../../../fixtures/v4/sample-encryption-private-key.pem'))
         config.private_signing_key = File.read(File.join(__dir__,
