@@ -39,7 +39,11 @@ Style/SlicingWithRange:
   Enabled: true
 
 Metrics/AbcSize:
-  Max: 18
+  Max: 25
+
+Naming/MethodParameterName:
+  Exclude:
+    - 'lib/myinfo/helpers/jwe_decryptor.rb'
 
 Lint/MissingSuper:
   Enabled: false

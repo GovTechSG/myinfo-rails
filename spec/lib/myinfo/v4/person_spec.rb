@@ -6,6 +6,8 @@ describe MyInfo::V4::Person do
       config.public_facing = public_facing
       config.base_url = 'test.myinfo.endpoint'
       config.authorise_jwks_base_url = 'test.authorise.singpass.gov.sg'
+      config.private_encryption_key = File.read(File.join(__dir__,
+                                                          '../../../fixtures/v4/sample-encryption-private-key.pem'))
     end
 
     allow(SecurityHelper).to receive(:thumbprint).with('public').and_return('thumbprint')
