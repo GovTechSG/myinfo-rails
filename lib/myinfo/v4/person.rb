@@ -55,7 +55,7 @@ module MyInfo
 
       def parse_response(response)
         super do
-          json = decrypt_jwe(response.body)
+          json = JweDecryptor.new(key: private_encryption_key, jwe: response.body).decrypt
           Response.new(success: true, data: json)
         end
       end

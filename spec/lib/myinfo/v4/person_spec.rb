@@ -89,7 +89,7 @@ describe MyInfo::V4::Person do
         stub_request(:get, 'https://test.myinfo.endpoint/com/v4/person/9E9B2260-47B8-455B-89B5-C48F4DB98322?scope=name%20sex%20race%20dob')
           .to_return(status: 200, body: '', headers: { 'Content-Type' => 'application/json' })
 
-        allow_any_instance_of(described_class).to receive(:decrypt_jwe).and_return({})
+        allow_any_instance_of(JweDecryptor).to receive(:decrypt).and_return({})
       end
 
       it 'returns a true response' do

@@ -8,6 +8,7 @@ require_relative 'myinfo/errors'
 
 require_relative 'myinfo/helpers/callable'
 require_relative 'myinfo/helpers/attributes'
+require_relative 'myinfo/helpers/jwe_decryptor'
 require_relative 'myinfo/helpers/security_helper'
 
 require_relative 'myinfo/v3/response'

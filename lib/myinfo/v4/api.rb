@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'jwt'
-require 'jose'
 
 module MyInfo
   module V4
@@ -139,13 +138,6 @@ module MyInfo
 
       def auth_header(access_token: nil)
         "DPoP #{access_token}"
-      end
-
-      def decrypt_jwe(value)
-        jwk = JOSE::JWK.from_key(private_encryption_key)
-        jwt = JOSE::JWE.block_decrypt(jwk, value).first
-
-        JSON.parse(JOSE::JWS.peek_payload(jwt), { symbolize_names: true })
       end
     end
   end

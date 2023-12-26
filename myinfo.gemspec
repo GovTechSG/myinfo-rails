@@ -17,8 +17,6 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.metadata    = { 'rubygems_mfa_required' => 'true' }
 
-  # TODO: find an alternative for jose as it is not maintained
-  s.add_runtime_dependency 'jose', '>= 1.1.3'
   s.add_runtime_dependency 'jwe', '~> 0.4'
   s.add_runtime_dependency 'jwt', '~> 2.7'
   s.add_development_dependency 'rails', '~> 7'
