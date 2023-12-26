@@ -69,10 +69,15 @@ class JweDecryptor
       ''
     ].pack('Na*Na*Na*a*a*')
     hash_len = hash.digest('').bytesize * 8
-    (key_data_len / hash_len.to_f).ceil
-
-    concatenation = [0, 0, 0, 1, key, other_info].pack('C4a*a*')
-    derived_key = [hash.digest(concatenation).unpack1('B*')[0...key_data_len]].pack('B*')
+    reps =  (key_data_len / hash_len.to_f).ceil
+    if reps == 1
+      concatenation = [0, 0, 0, 1, key, other_info].pack('C4a*a*')
+      derived_key = [hash.digest(concatenation).unpack1('B*')[0...key_data_len]].pack('B*')
+    elsif reps > 0xFFFFFFFF
+      raise ArgumentError, "too many reps"
+    else
+      derived_key = derive_key(hash, 1, reps, key_data_len, [key, other_info].join, '')
+    end
 
     unwrap(encrypted_key, derived_key)
   end
