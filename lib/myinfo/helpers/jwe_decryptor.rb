@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# This class is used to decrypt the JWE token received from MyInfo.
+# Codes are actually extracted from JOSE gem
 class JweDecryptor
   DEFAULT_IV = OpenSSL::BN.new(0xA6A6A6A6A6A6A6A6).to_s(2).freeze
 

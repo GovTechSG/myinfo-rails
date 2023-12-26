@@ -41,7 +41,7 @@ module MyInfo
         false
       end
 
-      def header(access_token: nil) # rubocop:disable Metrics/AbcSize
+      def header(access_token: nil)
         {
           'Content-Type' => 'application/json',
           'Accept' => 'application/json',
