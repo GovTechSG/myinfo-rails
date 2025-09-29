@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.metadata    = { 'rubygems_mfa_required' => 'true' }
 
-  s.add_runtime_dependency 'jwe', '~> 0.4'
+  s.add_runtime_dependency 'jwe', '~> 1.1'
   s.add_runtime_dependency 'jwt', '~> 2.7'
   s.add_development_dependency 'rails', '~> 7'
   s.add_development_dependency 'rake', '~> 13.0'
